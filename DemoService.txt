@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+<meta charset="ISO-8859-1">
+<title>Index Page</title>
+<script type="text/javascript" src="angular.js"></script>
+<script type="text/javascript" src="myjson.js"></script>
+</head>
+<body ng-controller="ServiceController">
+<h1>COUNTRY LIST</h1>
+
+<!-- list of items with a button to remove that item  -->
+<table border="1">
+<thead>
+<tr>
+<th>Country Id</th>
+<th>Country Name</th>
+<th>Country Population</th>
+<th>Action</th>
+</tr>
+</thead>
+ <tr ng-repeat="c in posts">  
+<td>{{c.countryId}}</td>
+<td>{{c.countryName}}</td>
+<td>{{c.population}}</td>
+<td><button ng-click="remove($index)">Remove</button></td>
+</tr>
+  </table>  
+    <!-- input and button it add a new item -->
+    <h1>ADD Country</h1>
+    <table>
+    <tr>
+    <td>  Country Id </td>
+    <td>  
+    <input type="text" ng-model="form.countryId">
+    </td>
+    </tr>
+    <tr>
+     <td> Country Name
+     </td>
+     <td> <input type="text" ng-model="form.countryName"></td>
+     </tr>
+     <tr>
+     <td> Country Population</td>
+     <td> <input type="text" ng-model="form.population"></td>
+     </tr>
+      <tr><td><button type="submit" ng-click="add()">Add</button>
+      </td>
+   </table>
+   </body>
+</html>
