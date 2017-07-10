@@ -1,0 +1,152 @@
+configuration.projectName: My Payments
+configuration.dir: C:/Users/souminat/Documents/UserData/mypayments/src/main/resources
+url.error: home
+
+#environment property
+app.environment: local
+app.manifest.path: classpath:META-INF/MANIFEST.MF
+
+# Logging Configuration
+logging.config: classpath:log4j-test.properties
+
+#DB Connections
+jdbcPayment.jdbcUrl: jdbc:oracle:thin:@ed01-scan.comfin.ge.com:1521/mypmtdv1
+jdbcPayment.user: Mypayapp
+jdbcPayment.password: F49da_6s
+jdbcPayment.testConnectionOnCheckout: true
+jdbcPayment.testConnectionOnCheckin: true
+jdbcPayment.idleConnectionTestPeriod: 30
+jdbcPayment.preferredTestQuery: select 1 from dual
+
+jdbcMdm.jdbcUrl: jdbc:oracle:thin:@mdmdev1db.treasury.ge.com:1521/mdmadv01
+jdbcMdm.user: MDM_MYPAYMENT
+jdbcMdm.password: b0Mba_cH1tO
+jdbcMdm.testConnectionOnCheckout: true
+jdbcMdm.testConnectionOnCheckin: true
+jdbcMdm.idleConnectionTestPeriod: 30
+jdbcMdm.preferredTestQuery: select 1 from dual
+
+#Prevent auto-execution of batch jobs on startup to run these on demand via JobLauncher
+spring.batch.job.enabled: false
+
+server.context-path: /mypayments
+
+# Audit Micro Services URL
+audit.ms.baseUrl: https://stage.api.ge.com/capital/dev/msauditmanager/v2/
+#audit.ms.baseUrl: https://microservices-dev.treasury.corp.ge.com/ms-audit/
+audit.ms.getAudits: readAudit
+audit.ms.createAudit: createAudits
+audit.ms.scope: api
+
+# Fine Grain Auth Micro Service URL
+finegrain-auth.url.get-auth: https://stage.api.ge.com/capital/dev/msfinegrainauth/v2/getCGFGAuth
+finegrain-auth.url.scope: api
+finegrain-auth-url-get-users: https://stage.api.ge.com/capital/dev/msfinegrainauth/v2/getUsers
+finegrain-auth-url-get-espayments: https://stage.api.ge.com/capital/dev/msfinegrainauth/v2/getACLMyPayEntData
+
+# Workflow Micro Service URL
+workflow.url: https://stage.api.ge.com/capital/dev/msworkflow/v2/getDecision?appName=MyPayments&module=ApprovalRules
+
+# MDM Microservice URL
+mdm.ms.security: true
+mdm.ms.baseUrl: https://stage.api.ge.com/capital/qa
+mdm.ms.scope: api
+
+mdm.ms.currency: /mdm-data-currency/v1
+mdm.ms.holiday: /mdm-data-holcal/v1
+mdm.ms.bankAccount: /mdm-data-bankacct/v1
+mdm.ms.bankBranch: /mdm-data-bank/v1
+mdm.ms.country: /mdm-data-country/v1
+mdm.ms.business: /mdm-data-business/v1
+mdm.ms.marketData: /mdm-data-mktdata/v1
+mdm.ms.le: /mdm-data-le/v1
+
+# Spring OAuth Security
+mypayments.oauth.accessTokenUri: https://fssfed.stage.ge.com/fss/as/token.oauth2
+#https://fssfed.stage.ge.com:443/fss/as/token.oauth2
+mypayments.oauth.grantType: client_credentials
+mypayments.oauth.clientId: mypayments
+mypayments.oauth.clientSecret: microservices
+
+mypayments.url.logout: https://ssousflogin.stage.corporate.ge.com/logoff/logoff.jsp
+mypayments.url.accessdenied: https://ssousflogin.stage.corporate.ge.com/corpbupages/OnAuth.jsp
+mypayments.url.error: /error
+mypayments.serverName: g2902usdltrs01v.treasury.corp.ge.com
+hrApi.oauth.scope: GECorp_HR_API
+
+user-lookup.url.lookup: https://stage.api.ge.com:443/gecorp/hrapi/v1/search/people?q=
+user-lookup.oauth.scope: GECorp_HR_API
+user-lookup.oauth.clientId: GECA_MyBank_Client
+user-lookup.oauth.clientSecret: mbyx83TlQQgUOobKHqF8KxkahJUca5TIRuZTVPE2VLn6WZvZhFgXj9qKVki4b5di
+
+# Rules file location
+location.fileRulesLocation: classpath:MyPaymentsSheetRule.xls
+
+# Batch User
+mypayment.batchUserSSO: MYPAYMENTSBATCH
+
+#GE Libraries
+geapi.gelib.applicationId: 5082
+geapi.gelib.app.userId: 200018200
+geapi.gelib.app.password: test123test
+geapi.gelib.defaultFolderId: 3001073055031
+geapi.gelib.localDirectory: /GEUploads/
+geapi.gelib.mimetype.whitelist: application/pdf;application/msword;application/vnd.openxmlformats-officedocument.wordprocessingml.document;application/rtf;application/vnd.ms-excel;application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;application/vnd.ms-powerpoint;application/vnd.openxmlformats-officedocument.presentationml.presentation;text/html;text/plain;image/tiff;image/jpeg;image/bmp;image/png;application/vnd.ms-outlook;application/zip;text/csv;application/octet-stream;application/x-zip-compressed
+geapi.gelib.extension.whitelist: pdf;doc;rtf;docx;xls;xlsx;ppt;pptx;htm;html;txt;tif;tiff;jpg;jpeg;bmp;png;zip;msg
+
+#TRS Configuration
+trs.payment.flatFilePath: ${configuration.dir}/out
+trs.payment.publicKeyPath: ${configuration.dir}/Treasury_TRS.asc
+trs.payment.privateKeyPath: ${configuration.dir}/MyPayTRSDev_Private.asc
+trs.payment.passPhrase: P@yments
+
+# Webcash Configuration
+webcash.payment.publicKeyPath: ${configuration.dir}/gewcincoming.asc
+webcash.payment.privateKeyPath: ${configuration.dir}/MyPayWCDev_Private.asc
+webcash.payment.passPhrase: P@yments
+
+# SFTP Configuration
+sftp.host: 10.42.173.201
+sftp.port: 22
+sftp.user.trs: pgp-gewc-mypay
+sftp.user.webcash: pgp-trs-mypay
+sftp.remoteDir.trs: /Inbound
+sftp.remoteDir.webcash: /
+sftp.allowUnknownKeys: true
+sftp.privateKey.path: ${configuration.dir}/DEV_Public_RSA_gewebcash_SFTP_Client_rsa.pub
+sftp.privateKey.passphrase: 
+sftp.poolSize: 10
+# in milliseconds (1 second)
+sftp.sessionWaitTimeout: 1000
+# in milliseconds (2.5 seconds)
+sftp.sendTimeout: 2500
+sftp.maxRetry: 1
+
+#getting akana Token - DEV
+akana.loginUrl: https://fssfed.stage.ge.com/fss/as/token.oauth2
+akana.clientId: GECAP_TRE_MS_GTB_STG
+akana.clientPswd: dfdd349019f971afba226cc9712dc77df75f2b13
+akana.scope: api
+akana.grantType: client_credentials
+akana.folderId: 25789859799
+akana.emailId: Service.BoxMyPaymentsID@ge.com 
+
+#getting GTB token - DEV
+gtb.loginUrl: https://stage.api.ge.com/digital/boxapi/v1/token
+
+#calling box api
+box.createFolderUrl: https://api.box.com/2.0/folders
+box.uploadFileUrl: https://upload.box.com/api/2.0/files/content
+box.extension.blacklist: ini;exe
+box.mimetype.blacklist: application/x-msdownload;application/x-ms-installer
+box.files.maxSize: 10485760
+
+# Email Notification
+mypayments.notification.host: mail.ad.ge.com
+mypayments.notification.email: mypayments.alerts.dev@ge.com
+mypayments.notification.usersEmail: mypayments.alerts.dev@ge.com
+mypayments.basewebdomainurl: http://webapps-${app.environment}.treasury.corp.ge.com/mypayments
+
+#Application URL's
+mypayments.highriskworkflow.url: http://supportcentral.ge.com/products/sup_products.asp?prod_id=71276
+mypayments.trstradingentity.url: http://supportcentral.ge.com/products/sup_products.asp?prod_id=35816
