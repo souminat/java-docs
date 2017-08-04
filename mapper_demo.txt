@@ -1,0 +1,1306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ge.treasury.mypayments.mapper.payment.PaymentRequestMapper">
+
+	
+	<resultMap id="PaymentRequestResultMap" type="com.ge.treasury.mypayments.domain.PaymentRequest">
+		<id property="requestId" column="PAYMENT_REQUEST_ID" />
+		<result property="mdmBusinessName" column="MDM_BUSINESS_NAME"/>
+		<result property="mdmSubBusinessName" column="MDM_SUB_BUSINESS_NAME"/>
+		<result property="paymentReasonCode" column="PAYMENT_REASON_CODE"/>
+		<result property="esCd" column="ES_CD"/>
+		<result property="paymentType" column="PAYMENT_TYPE_CD"/>
+		<result property="paymentMethod" column="PAYMENT_METHOD_CODE"/>
+		<result property="payerAmount" column="PAYER_AMOUNT" />
+		<result property="payeeAmount" column="PAYEE_AMOUNT" />
+		<result property="payeeSource" column="PAYEE_SOURCE" />
+		<result property="mdmPayerCurrency" column="MDM_PAYER_CURRENCY" />
+		<result property="paymentDate" column="PAYMENT_DATE" />
+		<result property="mdmSpotRate" column="MDM_SPOT_RATE" />
+		<result property="mdmMorRate" column="MDM_MOR_RATE" />
+		<result property="esSystemName" column="ES_SYSTEM_NAME"/>
+		<result property="erpName" column="ERP_NAME" />
+		<result property="invoiceNumber" column="INVOICE_NUMBER" />
+		<result property="invoiceDate" column="INVOICE_DATE" />
+		<result property="isHighRiskPayee" column="IS_HIGH_RISK_PAYEE" />
+		<result property="highRiskNumber" column="HIGH_RISK_NUMBER" />
+		<result property="payeeReasonManualEntry" column="PAYEE_REASON_MANUAL_ENTRY" />
+		<result property="paymentStatusCode" column="PAYMENT_STATUS_CODE" />
+		<result property="requestTypeCode" column="REQUEST_TYPE_CODE" />
+		<result property="assignedTo" column="ASSIGNED_TO" />
+		<result property="numberOfPayments" column="NUMBER_OF_PAYMENTS" />
+		<result property="totalAmount" column="TOTAL_AMOUNT" />
+		<result property="isGofBooked" column="IS_GOF_BOOKED" />
+		<!-- <result property="isrestrictedCurrency" column="IS_RESTRICTED_CURRENCY" /> -->
+		<result property="tCodeServiceCenter" column="TCODE_SERVICE_CENTER" />
+		<result property="instrumentType" column="INSTURMENT_TYPE" />
+		<result property="createUser" column="CREATE_USER" />
+		<result property="createDate" column="CREATE_TIMESTAMP" />
+	    <result property="lastUpdateUser" column="LAST_UPDATE_USER" />
+		<result property="lastUpdateDate" column="LAST_UPDATE_TIMESTAMP" />
+		<association property="payerPayeePk" 
+			javaType="com.ge.treasury.mypayments.domain.PayerPayee" 
+			resultMap="PayerPayeeResultMap"/>	
+		<association property="requestStatusId" 
+			javaType="com.ge.treasury.mypayments.domain.RequestActivity" 
+			resultMap="RequestActivityResultMap"/>	 
+	</resultMap>
+
+		<resultMap id="RequestActivityResultMap" type="com.ge.treasury.mypayments.domain.RequestActivity">
+		 <id property="paymentRequestId" column="PAYMENT_REQUEST_ID" />
+		 <result property="sequenceNumber" column="SEQUENCE_NUMBER"/>
+		 <result property="ssoId" column="SSO_ID"/>
+		 <result property="userName" column="USER_NAME"/>
+		 <result property="userEmail" column="USER_EMAIL"/>
+		 <result property="userRole" column="USER_ROLE"/>
+		 <result property="userBusiness" column="USER_BUSINESS"/>
+		 <result property="userSubBusiness" column="USER_SUB_BUSINESS"/>
+		 <result property="userAction" column="USER_ACTION"/>
+		 <result property="paymentStatusCode" column="PAYMENT_STATUS_CODE"/>
+		 <result property="rejectCancelReason" column="REJECT_CANCEL_REASON"/>
+		 <result property="comments" column="COMMENTS"/>
+		 <result property="paymentActivityId" column="PAYMENT_ACTIVITY_ID"/>
+		 <result property="valueDate" column="VALUE_DATE"/>
+	     <result property="lastUpdateUser" column="LAST_UPDATE_USER"/>
+		 <result property="lastUpdateDate" column="LAST_UPDATE_TIMESTAMP"/>
+		 <result property="createDate" column="CREATE_TIMESTAMP"/>
+		 <result property="createUser" column="CREATE_USER"/>
+	</resultMap>
+	
+    <resultMap id="PaymentReferenceResultMap" type="com.ge.treasury.mypayments.domain.PaymentReference">
+		 <id property="referenceId" column="REFERENCE_ID" />
+		 <result property="paymentRequestId" column="PAYMENT_REQUEST_ID"/>
+		 <result property="referenceCode" column="REFERENCE_CODE"/>
+		 <result property="referenceValue" column="REFERENCE_VALUE"/>
+		 <result property="createUser" column="CREATE_USER"/>
+		 <result property="createDate" column="CREATE_TIMESTAMP"/>
+		 <result property="lastUpdateUser" column="LAST_UPDATE_USER"/>
+		 <result property="lastUpdateDate" column="LAST_UPDATE_TIMESTAMP"/>		 
+	</resultMap>
+	
+	<resultMap id="PayerPayeeResultMap" type="com.ge.treasury.mypayments.domain.PayerPayee">
+		 <id property="payerPayeeId" column="PAYER_PAYEE_ID" />
+		 <result property="paymentRequestId" column="PAYMENT_REQUEST_ID"/>
+		 <result property="payerPayeeSrcId" column="PAYER_PAYEE_SRC_ID"/>
+		 <result property="payerOrPayee" column="PAYER_OR_PAYEE"/>
+		 <result property="bankAccountNumber" column="BANK_ACCOUNT_NUMBER"/>
+		 <result property="bankName" column="BANK_NAME"/>
+		 <result property="bankAddressLine1" column="BANK_ADDRESS_LINE_1"/>
+		 <result property="bankAddressLine2" column="BANK_ADDRESS_LINE_2"/>		
+		 <result property="bankAddressLine3" column="BANK_ADDRESS_LINE_3"/>
+		 <result property="bankAddressLine4" column="BANK_ADDRESS_LINE_4"/>
+		 <result property="bankCity" column="BANK_CITY"/>
+		 <result property="bankState" column="BANK_STATE"/>
+		 <result property="bankPostalCode" column="BANK_POSTAL_CODE"/>
+		 <result property="bankBranchCode" column="BANK_BRANCH_CODE"/>
+		 <result property="bankRoutingCode" column="BANK_ROUTING_CODE"/>	
+		 <result property="bankRoutingType" column="BANK_ROUTING_TYPE"/>
+		 <result property="ibanClabe" column="IBAN_CLABE"/>
+		 <result property="mdmBusinessName" column="MDM_BUSINESS_NAME"/>
+		 <result property="mdmSubBusinessName" column="MDM_SUB_BUSINESS_NAME"/>
+		 <result property="mdmGoldId" column="MDM_GOLD_ID"/>
+		 <result property="companyCode" column="COMPANY_CODE"/>
+		 <result property="mdmLEName" column="MDM_LE_NAME"/>
+		 <result property="payeeAddressLine1" column="PAYEE_ADDRESS_LINE_1"/>
+		 <result property="payeeAddressLine2" column="PAYEE_ADDRESS_LINE_2"/>	
+		 <result property="payeeAddressLine3" column="PAYEE_ADDRESS_LINE_3"/>
+		 <result property="payeeAddressLine4" column="PAYEE_ADDRESS_LINE_4"/>
+		 <result property="payeeCity" column="PAYEE_CITY"/>
+		 <result property="payeeState" column="PAYEE_STATE"/>	
+		 <result property="payeePostalCode" column="PAYEE_POSTAL_CODE"/>
+		 <result property="payeeCountryCode" column="PAYEE_COUNTRY_CODE"/>
+		 <result property="createUser" column="CREATE_USER"/>
+		 <result property="createDate" column="CREATE_TIMESTAMP"/>
+		 <result property="lastUpdateUser" column="LAST_UPDATE_USER"/>
+		 <result property="lastUpdateDate" column="LAST_UPDATE_TIMESTAMP"/>	
+		 <result property="bankCountry" column="BANK_COUNTRY"/>
+		 <result property="BankAccountTitle" column="ACCOUNT_TITLE"/>
+		 <result property="isRestrictedCountry" column="IS_RESTRICTED_COUNTRY"/>
+		 <result property="isRestrictedCurrency" column="IS_RESTRICTED_CURRENCY"/>
+		 <result property="gslSupplierId" column="GSL_SUPPLIER_ID"/>
+	</resultMap>
+	
+	<resultMap id="BankIntermediaryResultMap" type="com.ge.treasury.mypayments.domain.BankIntermediary">
+		 <id property="bankIntermediaryId" column="BANK_INTERMEDIARY_ID" />
+		 <result property="paymentRequestId" column="PAYMENT_REQUEST_ID"/>
+		 <result property="bankName" column="BANK_NAME"/>
+		 <result property="city" column="CITY"/>
+		 <result property="address1" column="ADDRESS_LINE_1"/>
+		 <result property="address2" column="ADDRESS_LINE_2"/>
+		 <result property="bankCode" column="BANK_CODE"/>
+		 <result property="accountNumber" column="ACCOUNT_NUMBER"/>	
+		 <result property="swiftCode" column="SWIFT_CODE"/>	
+		 <result property="abaNumber" column="ABA_NUMBER"/>	
+		 <result property="createUser" column="CREATE_USER"/>	
+		 <result property="createDate" column="CREATE_TIMESTAMP"/>	
+		 <result property="lastUpdateUser" column="LAST_UPDATE_USER"/>	
+		 <result property="lastUpdateDate" column="LAST_UPDATE_TIMESTAMP"/>		 
+	</resultMap>
+
+	<resultMap id="DashboardResultMap" type="com.ge.treasury.mypayments.domain.DashboardResult">
+		 <result property="requestId" column="PAYMENT_REQUEST_ID" />
+		 <result property="requestDate" column="CREATE_TIMESTAMP"/>
+		 <result property="enterpriseDesc" column="ES_DESC"/>
+		 <result property="paymentType" column="PAYMENT_TYPE_CD"/>
+		 <result property="payerSrcId" column="PAYER_PAYEE_SRC_ID"/>
+		 <result property="payerMdmGoldId" column="PAYER_MDM_GOLD_ID"/>
+		 <result property="payerMdmLeName" column="PAYER_MDM_LE_NAME"/>
+		 <result property="payeeDescripton" column="PAYEE"/>
+		 <result property="payeeSrcId" column="PAYEE_PAYEE_SRC_ID"/>
+         <result property="payeeMdmGoldId" column="PAYEE_MDM_GOLD_ID"/>
+         <result property="payeeMdmLeName" column="PAYEE_MDM_LE_NAME"/>
+		 <result property="payeeBankCountry" column="COUNTRY"/>
+		 <result property="payeeCurrency" column="PAYEE_CURRENCY"/>
+		 <result property="payeeAmount" column="PAYEE_AMOUNT"/>
+		 <result property="valueDate" column="PAYMENT_DATE"/>
+		 <result property="requester" column="CREATE_USER"/>
+		 <result property="assignedTo" column="ASSIGNED_TO"/>
+		 <result property="status" column="DISPLAY_NAME"/>
+		 <result property="totalRecords" column="RECORD_COUNT" jdbcType="NUMERIC" />
+		 <result property="requestTypeCode" column="REQUEST_TYPE_CODE"/>
+	</resultMap>
+	
+		
+    <resultMap id="PaymentDocumentResultMap" type="com.ge.treasury.mypayments.domain.PaymentDocument">
+		 <id property="documentId" column="DOCUMENT_ID"/>
+		 <result property="paymentRequestId" column="PAYMENT_REQUEST_ID"/>
+		 <result property="documentName" column="DOCUMENT_NAME"/>
+		 <result property="folderId" column="FOLDER_ID"/>
+		 <result property="fileId" column="FILE_ID"/>
+		 <result property="docUrl" column="DOC_URL"/>	
+		 <result property="isDocActive" column="IS_DOC_ACTIVE"/>	
+		 <result property="lastUpdateUser" column="LAST_UPDATE_USER"/>	
+		 <result property="lastUpdateDate" column="LAST_UPDATE_TIMESTAMP"/>
+         <result property="createDate" column="CREATE_TIMESTAMP"/>	
+		 <result property="createUser" column="CREATE_USER"/>			 
+    </resultMap>
+    
+    <resultMap id="PaymentConfirmationResultMap" type="com.ge.treasury.mypayments.domain.ManualConfirmation">
+		 <id property="manualConfimationId" column="MANUAL_CONFIRMATION_ID"/>
+		 <result property="paymentRequestId" column="PAYMENT_REQUEST_ID"/>
+		 <result property="paymentExecutionDt" column="PAYMENT_EXECUTION_DATE"/>
+		 <result property="bankConfirmationNo" column="BANK_CONFRMN_NUMBER"/>
+		 <result property="bankStatusCode" column="BANK_STATUS_CODE"/>
+		 <result property="failureReason" column="FAILURE_REASON"/>	
+		 <result property="bankStatusDt" column="BANK_STATUS_DATE"/>	
+		 <result property="lastUpdateUser" column="LAST_UPDATE_USER"/>	
+		 <result property="lastUpdateDate" column="LAST_UPDATE_TIMESTAMP"/>
+         <result property="createDate" column="CREATE_TIMESTAMP"/>	
+		 <result property="createUser" column="CREATE_USER"/>			 
+    </resultMap>
+    
+    <resultMap id="PaymentFileResultMap" type="com.ge.treasury.mypayments.domain.PaymentFile">
+		 <id property="autoPayFileId" column="AUTOPAY_FILE_ID" />
+		 <result property="paymentRequestId" column="PAYMENT_REQUEST_ID"/>
+		 <result property="sequenceNumber" column="SEQUENCE_NUMBER"/>
+		 <result property="fileTypeCode" column="FILE_TYPE_CODE"/>	
+		 <result property="fileStatusCode" column="FILE_STATUS_CODE"/>	
+		 <result property="paymentSystemCode" column="PAYMENT_SYSTEM_CODE"/>		 
+		 <result property="fileName" column="FILE_NAME"/>
+		 <result property="serverName" column="SERVER_NAME"/>
+		 <!-- <result property="folderName" column="FOLDER_NAME"/> -->
+		 <result property="file_hash" column="FILE_HASH"/>
+		 <result property="file_content" column="FILE_CONTENT" typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+		 <result property="fileComments" column="FILE_COMMENTS"/>
+		 <result property="createUser" column="CREATE_USER"/>	
+		 <result property="createDate" column="CREATE_TIMESTAMP"/>	
+		 <result property="lastUpdateUser" column="LAST_UPDATE_USER"/>	
+		 <result property="lastUpdateDate" column="LAST_UPDATE_TIMESTAMP"/>
+		 <result property="transmissionStatusCode" column="TRANSMISSION_STATUS_CODE"/>
+		 <result property="transmissionComments" column="TRANSMISSION_COMMENTS"/>
+	</resultMap>
+	
+	<resultMap id="MypayLookupResultMap" type="com.ge.treasury.mypayments.domain.MypayLookup">
+		 <id property="lookupCode" column="MYPAYMENT_LOOKUP_CODE" />
+		 <result property="lookupType" column="LOOKUP_TYPE"/>
+		 <result property="displayName" column="DISPLAY_NAME"/>
+		 <result property="displayOrder" column="DISPLAY_ORDER"/>	
+		 <result property="description" column="DESCRIPTION"/>	
+		 <result property="isActive" column="IS_ACTIVE" javaType="java.lang.Boolean" jdbcType="CHAR" typeHandler="com.ge.treasury.mypayments.domain.TypeHandler.BooleanTypeHandler" />		 
+		 <result property="isMandatory" column="IS_MANDATORY" javaType="java.lang.Boolean" jdbcType="CHAR" typeHandler="com.ge.treasury.mypayments.domain.TypeHandler.BooleanTypeHandler" />
+		 <result property="createUser" column="CREATE_USER"/>	
+		 <result property="createDate" column="CREATE_TIMESTAMP"/>	
+		 <result property="lastUpdateUser" column="LAST_UPDATE_USER"/>	
+		 <result property="lastUpdateDate" column="LAST_UPDATE_TIMESTAMP"/>
+	</resultMap>
+	
+	<resultMap id="PaymentRequestLoadAllMap" type="com.ge.treasury.mypayments.domain.CompletePaymentRequest">
+		 <id property="requestId" column="PAYMENT_REQUEST_ID" />
+		 <result property="tCode" column="PAYER_PAYEE_SRC_ID"/>
+		 <result property="payeeGoldId" column="PAYEE_GOLD_ID"/>
+		 <result property="mdmLeName" column="MDM_LE_NAME"/>	
+		 <result property="mdmBankAccountNumber" column="BANK_ACCOUNT_NUMBER"/>	
+		 <result property="mdmPayerCurrency" column="MDM_PAYER_CURRENCY"/>
+		 <result property="paymentAmount" column="PAYER_AMOUNT"/>	
+		 <result property="payerGoldId" column="PAYER_GOLD_ID"/>	
+	</resultMap>
+	
+	<resultMap id="PaymentRequestLoadMap" type="com.ge.treasury.mypayments.domain.PaymentRequest">
+		<id property="requestId" column="PAYMENT_REQUEST_ID" />
+		<result property="mdmBusinessName" column="MDM_BUSINESS_NAME"/>
+		<result property="mdmSubBusinessName" column="MDM_SUB_BUSINESS_NAME"/>
+		<result property="paymentReasonCode" column="PAYMENT_REASON_CODE"/>
+		<result property="esCd" column="ES_CD"/>
+		<result property="paymentType" column="PAYMENT_TYPE_CD"/>
+		<result property="paymentMethod" column="PAYMENT_METHOD_CODE"/>
+		<result property="payerAmount" column="PAYER_AMOUNT" />
+		<result property="payeeAmount" column="PAYEE_AMOUNT" />
+		<result property="payeeSource" column="PAYEE_SOURCE" />
+		<result property="mdmPayerCurrency" column="MDM_PAYER_CURRENCY" />
+		<result property="payeeCurrency" column="PAYEE_CURRENCY" />
+		<result property="paymentDate" column="PAYMENT_DATE" />
+		<result property="mdmSpotRate" column="MDM_SPOT_RATE" />
+		<result property="mdmMorRate" column="MDM_MOR_RATE" />
+		<result property="esSystemName" column="ES_SYSTEM_NAME"/>
+		<result property="erpName" column="ERP_NAME" />
+		<result property="invoiceNumber" column="INVOICE_NUMBER" />
+		<result property="invoiceDate" column="INVOICE_DATE" />
+		<result property="isHighRiskPayee" column="IS_HIGH_RISK_PAYEE" />
+		<result property="highRiskNumber" column="HIGH_RISK_NUMBER" />
+		<result property="payeeReasonManualEntry" column="PAYEE_REASON_MANUAL_ENTRY" />
+		<result property="paymentStatusCode" column="PAYMENT_STATUS_CODE" />
+		<result property="requestTypeCode" column="REQUEST_TYPE_CODE" />
+		<result property="assignedTo" column="ASSIGNED_TO" />
+		<result property="numberOfPayments" column="NUMBER_OF_PAYMENTS" />
+		<result property="totalAmount" column="TOTAL_AMOUNT" />
+		<result property="isGofBooked" column="IS_GOF_BOOKED" />
+		<!-- <result property="isrestrictedCurrency" column="IS_RESTRICTED_CURRENCY" /> -->
+		<result property="tCodeServiceCenter" column="TCODE_SERVICE_CENTER" />
+		<result property="instrumentType" column="INSTURMENT_TYPE" />
+		<result property="createUser" column="CREATE_USER" />
+		<result property="createDate" column="CREATE_TIMESTAMP" />
+	    <result property="lastUpdateUser" column="LAST_UPDATE_USER" />
+	    <result property="chargeBearer" column="CHARGE_BEARER" />
+	    <result property="paymentSystem" column="PAYMENT_SYSTEM" />
+	    <result property="trsEntityName" column="TRS_ENTITY_NAME" />
+	    <!-- <result property="vendorNumber" column="VENDOR_NUMBER" /> -->
+	    <result property="erpSubledBooking" column="ERP_SUBLED_BOOKING" />
+	    <result property="clrEntryBooking" column="CLEARING_ENTRY_BOOKING" />
+		<association property="payee" column="PAYMENT_REQUEST_ID"
+			javaType="com.ge.treasury.mypayments.domain.PayerPayee" select="selectPayee"/>	
+		<association property="payer" column="PAYMENT_REQUEST_ID"
+			javaType="com.ge.treasury.mypayments.domain.PayerPayee" select="selectPayer"/>
+		<collection property="requestActivities" column="PAYMENT_REQUEST_ID"
+			javaType="java.util.ArrayList" 
+			ofType="com.ge.treasury.mypayments.domain.RequestActivity" select="selectRequestActivity"/>	 
+		<collection property="intermediaries" column="PAYMENT_REQUEST_ID"
+			javaType="java.util.ArrayList" 
+			ofType="com.ge.treasury.mypayments.domain.BankIntermediary" select="selectBankIntermediary"/>
+		<collection property="paymentFiles" column="PAYMENT_REQUEST_ID"
+			javaType="java.util.ArrayList" 
+			ofType="com.ge.treasury.mypayments.domain.PaymentFile" select="selectPaymentFile"/>	 
+		<collection property="documents" column="PAYMENT_REQUEST_ID"
+			javaType="java.util.ArrayList" 
+			ofType="com.ge.treasury.mypayments.domain.PaymentDocument" select="selectPaymentDocument"/>	 
+		<collection property="manualConfirmation" column="PAYMENT_REQUEST_ID"
+			javaType="com.ge.treasury.mypayments.domain.ManualConfirmation" 
+			select="selectPaymentConfirmation"/>	 
+		<collection property="references" column="PAYMENT_REQUEST_ID"
+			javaType="java.util.ArrayList" 
+			ofType="com.ge.treasury.mypayments.domain.PaymentReference" 
+			select="selectPaymentReference"/>
+			
+	</resultMap>
+	
+	<!--  INSERT STATEMENTS  -->
+	<!-- Insert into PayerPayee table -->		
+	<insert id="insertPayerPayee" parameterType="com.ge.treasury.mypayments.domain.PayerPayee">
+		<selectKey keyProperty="payerPayee.payerPayeeId" resultType="long" order="BEFORE">
+	       SELECT MYPAY.SEQ_PAYER_PAYEE_ID.nextval FROM dual
+	    </selectKey>
+		INSERT INTO MYPAY.T_MYPAY_PAYER_PAYEE
+		(
+	    PAYER_PAYEE_ID,
+		PAYMENT_REQUEST_ID,
+		PAYER_PAYEE_SRC_ID,
+		PAYER_OR_PAYEE,
+	    BANK_ACCOUNT_NUMBER,
+		BANK_NAME,
+		BANK_ADDRESS_LINE_1,
+		BANK_ADDRESS_LINE_2,
+	    BANK_ADDRESS_LINE_3,
+		BANK_ADDRESS_LINE_4,
+		BANK_CITY,
+		BANK_STATE,
+	    BANK_POSTAL_CODE,
+		BANK_BRANCH_CODE,
+		BANK_ROUTING_CODE,
+		BANK_ROUTING_TYPE,
+		IBAN_CLABE,
+	    MDM_BUSINESS_NAME,
+		MDM_SUB_BUSINESS_NAME,
+		MDM_GOLD_ID,
+		COMPANY_CODE,
+		MDM_LE_NAME,
+	    PAYEE_ADDRESS_LINE_1,
+		PAYEE_ADDRESS_LINE_2,
+		PAYEE_ADDRESS_LINE_3,
+		PAYEE_ADDRESS_LINE_4,
+		PAYEE_CITY,
+		PAYEE_STATE,
+		PAYEE_POSTAL_CODE,
+		PAYEE_COUNTRY_CODE,
+	    CREATE_USER,
+		CREATE_TIMESTAMP,
+		LAST_UPDATE_USER,
+		LAST_UPDATE_TIMESTAMP,
+		BANK_COUNTRY,
+		ACCOUNT_TITLE,
+		IS_RESTRICTED_COUNTRY,
+		IS_RESTRICTED_CURRENCY,
+		GSL_SUPPLIER_ID
+		)
+		VALUES 
+		(
+		#{payerPayee.payerPayeeId,javaType=long,jdbcType=NUMERIC},
+		#{payerPayee.paymentRequestId,javaType=long,jdbcType=NUMERIC},
+		#{payerPayee.payerPayeeSrcId,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.payerOrPayee,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.bankAccountNumber,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.bankName,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.bankAddressLine1,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.bankAddressLine2,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.bankAddressLine3,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.bankAddressLine4,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.bankCity,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.bankState,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.bankPostalCode,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.bankBranchCode,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.bankRoutingCode,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.bankRoutingType,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.ibanClabe,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.mdmBusinessName,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.mdmSubBusinessName,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.mdmGoldId,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.companyCode,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.mdmLEName,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.payeeAddressLine1,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.payeeAddressLine2,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.payeeAddressLine3,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.payeeAddressLine4,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.payeeCity,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.payeeState,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.payeePostalCode,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.payeeCountryCode,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.createUser,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.createDate,javaType=Date,jdbcType=TIMESTAMP},
+        #{payerPayee.lastUpdateUser,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.lastUpdateDate,javaType=Date,jdbcType=TIMESTAMP},
+		#{payerPayee.bankCountry,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.BankAccountTitle,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.isRestrictedCountry,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.isRestrictedCurrency,javaType=String,jdbcType=VARCHAR},
+		#{payerPayee.gslSupplierId,javaType=String,jdbcType=VARCHAR}
+		)	
+	</insert>
+	
+    <!-- Insert into Payment Request table for Create Payment Request-->
+	<insert id="createPaymentReq" parameterType="com.ge.treasury.mypayments.domain.PaymentRequest">
+       <selectKey keyProperty="request.requestId" resultType="long" order="BEFORE">
+           SELECT MYPAY.SEQ_PAYMENT_REQUEST_ID.nextval FROM dual
+       </selectKey>
+       INSERT INTO MYPAY.T_MYPAY_PAYMENT_REQUEST
+       (            
+            PAYMENT_REQUEST_ID,
+            MDM_BUSINESS_NAME,
+            MDM_SUB_BUSINESS_NAME,
+            PAYMENT_REASON_CODE,
+            ES_CD,
+            PAYMENT_TYPE_CD,
+            PAYER_AMOUNT,
+            MDM_PAYER_CURRENCY,
+            PAYEE_AMOUNT,
+            PAYEE_SOURCE,
+            PAYEE_CURRENCY,
+            PAYMENT_DATE,
+            MDM_SPOT_RATE,
+            MDM_MOR_RATE,
+            ES_SYSTEM_NAME,
+            ERP_NAME,
+            INVOICE_NUMBER,
+            INVOICE_DATE,
+            IS_HIGH_RISK_PAYEE,
+            HIGH_RISK_NUMBER,
+            PAYEE_REASON_MANUAL_ENTRY,
+            PAYMENT_STATUS_CODE,
+            REQUEST_TYPE_CODE,
+            ASSIGNED_TO,
+            NUMBER_OF_PAYMENTS,
+            TOTAL_AMOUNT,
+            IS_GOF_BOOKED,
+            TCODE_SERVICE_CENTER,
+            INSTURMENT_TYPE,
+            PAYMENT_METHOD_CODE,
+			CREATE_USER, 
+			CREATE_TIMESTAMP,
+			LAST_UPDATE_USER,
+			LAST_UPDATE_TIMESTAMP,
+			TRS_ENTITY_NAME,
+			ERP_SUBLED_BOOKING,
+			CLEARING_ENTRY_BOOKING
+        )
+        VALUES
+        (
+            #{request.requestId,javaType=long,jdbcType=NUMERIC},
+            #{request.mdmBusinessName,javaType=String,jdbcType=VARCHAR},
+            #{request.mdmSubBusinessName,javaType=String,jdbcType=VARCHAR},
+            #{request.paymentReasonCode,javaType=String,jdbcType=VARCHAR},
+            #{request.esCd,javaType=String,jdbcType=VARCHAR},
+            #{request.paymentType,javaType=String,jdbcType=VARCHAR}, 
+            #{request.payeeAmount,javaType=Double,jdbcType=NUMERIC}, 
+            #{request.mdmPayerCurrency,javaType=String,jdbcType=VARCHAR},
+            #{request.payeeAmount,javaType=Double,jdbcType=NUMERIC},
+            #{request.payeeSource,javaType=String,jdbcType=VARCHAR},
+            #{request.payeeCurrency,javaType=String,jdbcType=VARCHAR},
+            to_date(#{request.paymentDate,javaType=String,jdbcType=DATE}, 'yyyy-mm-dd'),
+            #{request.mdmSpotRate,javaType=Double,jdbcType=NUMERIC},
+            #{request.mdmMorRate,javaType=Double,jdbcType=NUMERIC},
+            #{request.esSystemName,javaType=String,jdbcType=VARCHAR},
+            #{request.erpName,javaType=String,jdbcType=VARCHAR},
+            #{request.invoiceNumber,javaType=String,jdbcType=VARCHAR},
+            to_date(#{request.invoiceDate,javaType=String,jdbcType=DATE}, 'yyyy-mm-dd'), 
+            #{request.isHighRiskPayee,javaType=String,jdbcType=VARCHAR},
+            #{request.highRiskNumber,javaType=String,jdbcType=VARCHAR}, 
+            #{request.payeeReasonManualEntry,javaType=String,jdbcType=VARCHAR},
+            #{request.paymentStatusCode,javaType=String,jdbcType=VARCHAR},
+            #{request.requestTypeCode,javaType=String,jdbcType=VARCHAR},
+            #{request.assignedTo,javaType=String,jdbcType=VARCHAR},
+            #{request.numberOfPayments,javaType=long,jdbcType=NUMERIC},
+            #{request.totalAmount,javaType=Double,jdbcType=NUMERIC},
+            #{request.isGofBooked,javaType=String,jdbcType=VARCHAR},
+            #{request.tCodeServiceCenter,javaType=String,jdbcType=VARCHAR},
+            #{request.instrumentType,javaType=String,jdbcType=VARCHAR},
+            #{request.paymentMethod,javaType=String,jdbcType=VARCHAR},
+            #{request.createUser,javaType=String,jdbcType=VARCHAR},
+            #{request.createDate,javaType=Date,jdbcType=TIMESTAMP},
+            #{request.lastUpdateUser,javaType=String,jdbcType=VARCHAR},
+            #{request.lastUpdateDate,javaType=Date,jdbcType=TIMESTAMP},
+            #{request.trsEntityName,javaType=String,jdbcType=VARCHAR},
+            #{request.erpSubledBooking,javaType=String,jdbcType=VARCHAR},
+            #{request.clrEntryBooking,javaType=String,jdbcType=VARCHAR}
+        )
+    </insert>
+
+         <!-- Insert into RequestActivity table -->
+    <insert id="insertRequestActivity" parameterType="com.ge.treasury.mypayments.domain.RequestActivity">
+       
+       <!-- <selectKey keyProperty="requestActivity.sequenceNumber" resultType="long" order="BEFORE">
+           SELECT MAX(SEQUENCE_NUMBER) + 1  FROM MYPAY.T_MYPAY_REQUEST_ACTIVITY WHERE PAYMENT_REQUEST_ID = #{requestActivity.paymentRequestId,javaType=long,jdbcType=NUMERIC}
+       </selectKey> -->
+
+       <selectKey keyProperty="requestActivity.paymentActivityId" resultType="long" order="BEFORE">
+           SELECT MYPAY.SEQ_MYPAYMENT_ACTIVITY_ID.nextval FROM dual
+       </selectKey>
+        INSERT INTO MYPAY.T_MYPAY_REQUEST_ACTIVITY
+        (
+        PAYMENT_ACTIVITY_ID,
+		PAYMENT_REQUEST_ID,
+		SEQUENCE_NUMBER,
+		SSO_ID,
+		USER_NAME,
+        USER_EMAIL,
+		USER_ROLE,
+		USER_BUSINESS,
+		USER_SUB_BUSINESS,
+		USER_ACTION,
+		PAYMENT_STATUS_CODE,
+        REJECT_CANCEL_REASON,
+		COMMENTS,
+		VALUE_DATE,
+		LAST_UPDATE_USER,
+		LAST_UPDATE_TIMESTAMP,
+		CREATE_TIMESTAMP,
+		CREATE_USER,
+		PAYMENT_METHOD_CODE
+        )
+        VALUES
+        (
+        #{requestActivity.paymentActivityId,javaType=long,jdbcType=NUMERIC},
+		#{requestActivity.paymentRequestId,javaType=long,jdbcType=NUMERIC},
+        #{requestActivity.sequenceNumber,javaType=long,jdbcType=NUMERIC},
+        #{requestActivity.ssoId,javaType=String,jdbcType=VARCHAR},
+		#{requestActivity.userName,javaType=String,jdbcType=VARCHAR},
+        #{requestActivity.userEmail,javaType=String,jdbcType=VARCHAR},
+		#{requestActivity.userRole,javaType=String,jdbcType=VARCHAR},
+        #{requestActivity.userBusiness,javaType=String,jdbcType=VARCHAR},
+		#{requestActivity.userSubBusiness,javaType=String,jdbcType=VARCHAR},
+        #{requestActivity.userAction,javaType=String,jdbcType=VARCHAR},
+		#{requestActivity.paymentStatusCode,javaType=String,jdbcType=VARCHAR},
+        #{requestActivity.rejectCancelReason,javaType=String,jdbcType=VARCHAR},
+		#{requestActivity.comments,javaType=String,jdbcType=VARCHAR},
+		to_date(#{requestActivity.valueDate,javaType=String,jdbcType=DATE}, 'yyyy-mm-dd'),
+        #{requestActivity.lastUpdateUser,javaType=String,jdbcType=VARCHAR},
+		#{requestActivity.lastUpdateDate,javaType=Date,jdbcType=TIMESTAMP},
+        #{requestActivity.createDate,javaType=Date,jdbcType=TIMESTAMP},
+		#{requestActivity.createUser,javaType=String,jdbcType=VARCHAR},
+		#{requestActivity.paymentMethodCode,javaType=String,jdbcType=VARCHAR}
+        )
+    </insert>
+    
+      <!-- Insert into Payment Reference table -->
+    <insert id="insertPaymentReference" parameterType="com.ge.treasury.mypayments.domain.PaymentReference">
+       <selectKey keyProperty="reference.referenceId" resultType="long" order="BEFORE">
+           SELECT MYPAY.SEQ_REFERENCE_ID.nextval FROM dual
+       </selectKey>
+        INSERT INTO MYPAY.T_MYPAY_REFERENCES
+        (
+        REFERENCE_ID,
+		PAYMENT_REQUEST_ID,
+		REFERENCE_CODE,
+		REFERENCE_VALUE,
+        CREATE_USER,
+		CREATE_TIMESTAMP,
+		LAST_UPDATE_USER,
+		LAST_UPDATE_TIMESTAMP
+        )
+        VALUES
+        (
+        #{reference.referenceId,javaType=long,jdbcType=NUMERIC},
+		#{reference.paymentRequestId,javaType=long,jdbcType=NUMERIC},
+        #{reference.referenceCode,javaType=String,jdbcType=VARCHAR},
+		#{reference.referenceValue,javaType=String,jdbcType=VARCHAR},
+        #{reference.createUser,javaType=String,jdbcType=VARCHAR},
+		#{reference.createDate,javaType=Date,jdbcType=TIMESTAMP},
+        #{reference.lastUpdateUser,javaType=String,jdbcType=VARCHAR},
+		#{reference.lastUpdateDate,javaType=Date,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    
+    <!-- Insert into Bank intermediary table -->
+        <insert id="insertBankIntermediary" parameterType="com.ge.treasury.mypayments.domain.BankIntermediary">
+      <selectKey keyProperty="bankIntermediary.bankIntermediaryId" resultType="long" order="BEFORE">
+           SELECT MYPAY.SEQ_BANK_INTERMEDIARY_ID.nextval FROM dual
+       </selectKey> 
+        INSERT INTO MYPAY.T_MYPAY_BANK_INTERMEDIARY
+        (
+            BANK_INTERMEDIARY_ID,
+			PAYMENT_REQUEST_ID,
+			BANK_NAME, CITY,
+            ADDRESS_LINE_1,
+			ADDRESS_LINE_2,
+			BANK_CODE,
+			ACCOUNT_NUMBER,
+            SWIFT_CODE,
+			ABA_NUMBER,
+			CREATE_USER,
+			CREATE_TIMESTAMP,
+			LAST_UPDATE_USER,
+			LAST_UPDATE_TIMESTAMP
+        )
+        VALUES
+        (
+            #{bankIntermediary.bankIntermediaryId,javaType=long,jdbcType=NUMERIC},
+			#{bankIntermediary.paymentRequestId,javaType=long,jdbcType=NUMERIC},
+            #{bankIntermediary.bankName,javaType=String,jdbcType=VARCHAR},
+			#{bankIntermediary.city,javaType=String,jdbcType=VARCHAR},
+            #{bankIntermediary.address1,javaType=String,jdbcType=VARCHAR},
+			#{bankIntermediary.address2,javaType=String,jdbcType=VARCHAR},
+            #{bankIntermediary.bankCode,javaType=String,jdbcType=VARCHAR},
+			#{bankIntermediary.accountNumber,javaType=String,jdbcType=VARCHAR},
+            #{bankIntermediary.swiftCode,javaType=String,jdbcType=VARCHAR},
+			#{bankIntermediary.abaNumber,javaType=String,jdbcType=VARCHAR},
+            #{bankIntermediary.createUser,javaType=String,jdbcType=VARCHAR},
+			#{bankIntermediary.createDate,javaType=Date,jdbcType=TIMESTAMP},
+            #{bankIntermediary.lastUpdateUser,javaType=String,jdbcType=VARCHAR},
+			#{bankIntermediary.lastUpdateDate,javaType=Date,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    
+    <insert id="insertDocument" parameterType="com.ge.treasury.mypayments.domain.PaymentDocument">
+    <selectKey keyProperty="paymentDocument.documentId" resultType="long" order="BEFORE" >
+      SELECT MYPAY.SEQ_DOCUMENT_ID.nextval FROM dual
+    </selectKey>
+    insert into MYPAY.T_MYPAY_DOCUMENT 
+    (
+		DOCUMENT_ID,
+		DOCUMENT_NAME,
+		FOLDER_ID,
+		FILE_ID,
+		DOC_URL,
+		IS_DOC_ACTIVE,
+		PAYMENT_REQUEST_ID,
+		CREATE_TIMESTAMP,
+		CREATE_USER,
+		LAST_UPDATE_TIMESTAMP,
+		LAST_UPDATE_USER
+      
+      )
+      VALUES
+      (
+		#{paymentDocument.documentId,javaType=long,jdbcType=NUMERIC},
+		#{paymentDocument.documentName,javaType=String,jdbcType=VARCHAR},
+		#{paymentDocument.folderId,javaType=String,jdbcType=VARCHAR},
+		#{paymentDocument.fileId,javaType=String,jdbcType=VARCHAR},
+		#{paymentDocument.docUrl,javaType=String,jdbcType=VARCHAR},
+		#{paymentDocument.isDocActive,javaType=String,jdbcType=VARCHAR},
+		#{paymentDocument.paymentRequestId,javaType=long,jdbcType=NUMERIC},
+		#{paymentDocument.createDate,javaType=Date,jdbcType=TIMESTAMP},
+		#{paymentDocument.createUser,javaType=String,jdbcType=VARCHAR},
+		#{paymentDocument.lastUpdateDate,javaType=Date,jdbcType=TIMESTAMP},
+		#{paymentDocument.lastUpdateUser,javaType=String,jdbcType=VARCHAR}
+        )
+  </insert>
+  
+  <!-- Insert into Payment File table -->
+    <insert id="insertPaymentFile" parameterType="com.ge.treasury.mypayments.domain.PaymentFile">
+       <selectKey keyProperty="paymentFile.autoPayFileId" resultType="long" order="BEFORE">
+           SELECT MYPAY.SEQ_MYPAYMENT_ACTIVITY_ID.nextval FROM dual
+       </selectKey>
+        INSERT INTO MYPAY.T_MYPAY_AUTOPAY_FILE
+        (
+            AUTOPAY_FILE_ID, PAYMENT_REQUEST_ID,SEQUENCE_NUMBER,FILE_TYPE_CODE, FILE_STATUS_CODE, PAYMENT_SYSTEM_CODE, FILE_NAME, SERVER_NAME,
+            FILE_COMMENTS, FILE_HASH,  FILE_CONTENT, LAST_UPDATE_USER,
+			LAST_UPDATE_TIMESTAMP, CREATE_TIMESTAMP, CREATE_USER
+        )
+        VALUES
+        (
+            #{paymentFile.autoPayFileId,javaType=long,jdbcType=NUMERIC}, #{paymentFile.paymentRequestId,javaType=long,jdbcType=NUMERIC}, 
+            #{paymentFile.sequenceNumber,javaType=long,jdbcType=NUMERIC}, #{paymentFile.fileTypeCode,javaType=String,jdbcType=VARCHAR}, 
+             #{paymentFile.fileStatusCode,javaType=String,jdbcType=VARCHAR}, 
+            #{paymentFile.paymentSystemCode,javaType=String,jdbcType=VARCHAR}, #{paymentFile.fileName,javaType=String,jdbcType=VARCHAR},
+            #{paymentFile.serverName,javaType=String,jdbcType=VARCHAR}, #{paymentFile.fileComments,javaType=String,jdbcType=VARCHAR}, 
+            #{paymentFile.file_hash,javaType=String,jdbcType=VARCHAR}, #{paymentFile.file_content,javaType=String,jdbcType=CLOB,typeHandler=org.apache.ibatis.type.ClobTypeHandler}, 
+            #{paymentFile.lastUpdateUser,javaType=String,jdbcType=VARCHAR}, #{paymentFile.lastUpdateDate,javaType=Date,jdbcType=TIMESTAMP},
+            #{paymentFile.createDate,javaType=Date,jdbcType=TIMESTAMP}, #{paymentFile.createUser,javaType=String,jdbcType=VARCHAR}
+        )
+    </insert>
+    
+    
+   
+    <!--  UPDATE STATEMENTS  -->
+	<update id="updatePayRequest" parameterType="com.ge.treasury.mypayments.domain.PaymentRequest">
+ 			   					 
+  			update MYPAY.T_MYPAY_PAYMENT_REQUEST set    			  
+      			   LAST_UPDATE_USER =  #{record.lastUpdateUser,javaType=String,jdbcType=VARCHAR},
+      			   LAST_UPDATE_TIMESTAMP = #{record.lastUpdateDate,javaType=Date,jdbcType=TIMESTAMP},
+      			   PAYMENT_STATUS_CODE = #{record.paymentStatusCode,javaType=String,jdbcType=VARCHAR},
+      			   PAYMENT_SYSTEM = #{record.paymentSystem,javaType=String,jdbcType=VARCHAR}
+      		where PAYMENT_REQUEST_ID = #{record.requestId,javaType=long,jdbcType=NUMERIC}	 
+	</update>
+	
+	
+	
+	
+	<update id="updatePayerForApprovalSave" parameterType="com.ge.treasury.mypayments.domain.PaymentRequest">
+ 			
+ 			UPDATE MYPAY.T_MYPAY_PAYER_PAYEE
+ 			SET	PAYER_PAYEE_SRC_ID=#{payerPayee.payerPayeeSrcId,javaType=String,jdbcType=VARCHAR},
+			    BANK_ACCOUNT_NUMBER=#{payerPayee.bankAccountNumber,javaType=String,jdbcType=VARCHAR},
+				BANK_NAME=#{payerPayee.bankName,javaType=String,jdbcType=VARCHAR},
+				BANK_ADDRESS_LINE_1=#{payerPayee.bankAddressLine1,javaType=String,jdbcType=VARCHAR},
+				BANK_ADDRESS_LINE_2=#{payerPayee.bankAddressLine2,javaType=String,jdbcType=VARCHAR},
+			    BANK_ADDRESS_LINE_3=#{payerPayee.bankAddressLine3,javaType=String,jdbcType=VARCHAR},
+				BANK_ADDRESS_LINE_4=#{payerPayee.bankAddressLine4,javaType=String,jdbcType=VARCHAR},
+				BANK_CITY=#{payerPayee.bankCity,javaType=String,jdbcType=VARCHAR},
+				BANK_STATE=#{payerPayee.bankState,javaType=String,jdbcType=VARCHAR},
+			    BANK_POSTAL_CODE=#{payerPayee.bankPostalCode,javaType=String,jdbcType=VARCHAR},
+				BANK_BRANCH_CODE=#{payerPayee.bankBranchCode,javaType=String,jdbcType=VARCHAR},
+				BANK_ROUTING_CODE=#{payerPayee.bankRoutingCode,javaType=String,jdbcType=VARCHAR},
+				BANK_ROUTING_TYPE=#{payerPayee.bankRoutingType,javaType=String,jdbcType=VARCHAR},
+				IBAN_CLABE=#{payerPayee.ibanClabe,javaType=String,jdbcType=VARCHAR},
+			    MDM_BUSINESS_NAME=#{payerPayee.mdmBusinessName,javaType=String,jdbcType=VARCHAR},
+				MDM_SUB_BUSINESS_NAME=#{payerPayee.mdmSubBusinessName,javaType=String,jdbcType=VARCHAR},
+				MDM_GOLD_ID=#{payerPayee.mdmGoldId,javaType=String,jdbcType=VARCHAR},
+				COMPANY_CODE=#{payerPayee.companyCode,javaType=String,jdbcType=VARCHAR},
+				MDM_LE_NAME=#{payerPayee.mdmLEName,javaType=String,jdbcType=VARCHAR},
+			    PAYEE_ADDRESS_LINE_1=#{payerPayee.payeeAddressLine1,javaType=String,jdbcType=VARCHAR},
+				PAYEE_ADDRESS_LINE_2=#{payerPayee.payeeAddressLine2,javaType=String,jdbcType=VARCHAR},
+				PAYEE_ADDRESS_LINE_3=#{payerPayee.payeeAddressLine3,javaType=String,jdbcType=VARCHAR},
+				PAYEE_ADDRESS_LINE_4=#{payerPayee.payeeAddressLine4,javaType=String,jdbcType=VARCHAR},
+				PAYEE_CITY=#{payerPayee.payeeCity,javaType=String,jdbcType=VARCHAR},
+				PAYEE_STATE=#{payerPayee.payeeState,javaType=String,jdbcType=VARCHAR},
+				PAYEE_POSTAL_CODE=#{payerPayee.payeePostalCode,javaType=String,jdbcType=VARCHAR},
+				PAYEE_COUNTRY_CODE=#{payerPayee.payeeCountryCode,javaType=String,jdbcType=VARCHAR},
+				LAST_UPDATE_USER=#{payerPayee.lastUpdateUser,javaType=String,jdbcType=VARCHAR},
+				LAST_UPDATE_TIMESTAMP=#{payerPayee.lastUpdateDate,javaType=Date,jdbcType=TIMESTAMP}
+		   		WHERE PAYMENT_REQUEST_ID=#{recordId,javaType=long,jdbcType=NUMERIC}	
+		   		AND PAYER_OR_PAYEE='PAYER'			 
+	</update>
+	
+	<update id="updatePayeeForApprovalSave" parameterType="com.ge.treasury.mypayments.domain.PaymentRequest">
+ 			
+ 			UPDATE MYPAY.T_MYPAY_PAYER_PAYEE
+ 			SET	PAYER_PAYEE_SRC_ID=#{payerPayee.payerPayeeSrcId,javaType=String,jdbcType=VARCHAR},
+			    BANK_ACCOUNT_NUMBER=#{payerPayee.bankAccountNumber,javaType=String,jdbcType=VARCHAR},
+				BANK_NAME=#{payerPayee.bankName,javaType=String,jdbcType=VARCHAR},
+				BANK_ADDRESS_LINE_1=#{payerPayee.bankAddressLine1,javaType=String,jdbcType=VARCHAR},
+				BANK_ADDRESS_LINE_2=#{payerPayee.bankAddressLine2,javaType=String,jdbcType=VARCHAR},
+			    BANK_ADDRESS_LINE_3=#{payerPayee.bankAddressLine3,javaType=String,jdbcType=VARCHAR},
+				BANK_ADDRESS_LINE_4=#{payerPayee.bankAddressLine4,javaType=String,jdbcType=VARCHAR},
+				BANK_CITY=#{payerPayee.bankCity,javaType=String,jdbcType=VARCHAR},
+				BANK_STATE=#{payerPayee.bankState,javaType=String,jdbcType=VARCHAR},
+			    BANK_POSTAL_CODE=#{payerPayee.bankPostalCode,javaType=String,jdbcType=VARCHAR},
+				BANK_BRANCH_CODE=#{payerPayee.bankBranchCode,javaType=String,jdbcType=VARCHAR},
+				BANK_ROUTING_CODE=#{payerPayee.bankRoutingCode,javaType=String,jdbcType=VARCHAR},
+				BANK_ROUTING_TYPE=#{payerPayee.bankRoutingType,javaType=String,jdbcType=VARCHAR},
+				IBAN_CLABE=#{payerPayee.ibanClabe,javaType=String,jdbcType=VARCHAR},
+			    MDM_BUSINESS_NAME=#{payerPayee.mdmBusinessName,javaType=String,jdbcType=VARCHAR},
+				MDM_SUB_BUSINESS_NAME=#{payerPayee.mdmSubBusinessName,javaType=String,jdbcType=VARCHAR},
+				MDM_GOLD_ID=#{payerPayee.mdmGoldId,javaType=String,jdbcType=VARCHAR},
+				COMPANY_CODE=#{payerPayee.companyCode,javaType=String,jdbcType=VARCHAR},
+				MDM_LE_NAME=#{payerPayee.mdmLEName,javaType=String,jdbcType=VARCHAR},
+			    PAYEE_ADDRESS_LINE_1=#{payerPayee.payeeAddressLine1,javaType=String,jdbcType=VARCHAR},
+				PAYEE_ADDRESS_LINE_2=#{payerPayee.payeeAddressLine2,javaType=String,jdbcType=VARCHAR},
+				PAYEE_ADDRESS_LINE_3=#{payerPayee.payeeAddressLine3,javaType=String,jdbcType=VARCHAR},
+				PAYEE_ADDRESS_LINE_4=#{payerPayee.payeeAddressLine4,javaType=String,jdbcType=VARCHAR},
+				PAYEE_CITY=#{payerPayee.payeeCity,javaType=String,jdbcType=VARCHAR},
+				PAYEE_STATE=#{payerPayee.payeeState,javaType=String,jdbcType=VARCHAR},
+				PAYEE_POSTAL_CODE=#{payerPayee.payeePostalCode,javaType=String,jdbcType=VARCHAR},
+				PAYEE_COUNTRY_CODE=#{payerPayee.payeeCountryCode,javaType=String,jdbcType=VARCHAR},
+				LAST_UPDATE_USER=#{payerPayee.lastUpdateUser,javaType=String,jdbcType=VARCHAR},
+				LAST_UPDATE_TIMESTAMP=#{payerPayee.lastUpdateDate,javaType=Date,jdbcType=TIMESTAMP}
+		   		WHERE PAYMENT_REQUEST_ID=#{recordId,javaType=long,jdbcType=NUMERIC}	
+		   		AND PAYER_OR_PAYEE='PAYEE'			 
+	</update>
+	
+	<update id="updateApprovalPaymentParams" parameterType="com.ge.treasury.mypayments.domain.PaymentRequest">
+ 			   					 
+  			update MYPAY.T_MYPAY_PAYMENT_REQUEST set    			  
+      			   LAST_UPDATE_USER =  #{record.lastUpdateUser,javaType=String,jdbcType=VARCHAR},
+      			   LAST_UPDATE_TIMESTAMP = #{record.lastUpdateDate,javaType=Date,jdbcType=TIMESTAMP},
+      			   PAYMENT_DATE = #{date_app,javaType=Date,jdbcType=DATE},
+      			   PAYEE_REASON_MANUAL_ENTRY = #{record.payeeReasonManualEntry,javaType=String,jdbcType=VARCHAR},
+      			   REQUEST_TYPE_CODE = #{record.requestTypeCode,javaType=String,jdbcType=VARCHAR}
+      		where PAYMENT_REQUEST_ID = #{record.requestId,javaType=long,jdbcType=NUMERIC}	 
+	</update>
+	
+	
+	<update id="updatePrepareDate" parameterType="com.ge.treasury.mypayments.domain.PaymentRequest">
+ 			   					 
+  			update MYPAY.T_MYPAY_PAYMENT_REQUEST set    			  
+      			   LAST_UPDATE_USER =  #{record.lastUpdateUser,javaType=String,jdbcType=VARCHAR},
+      			   LAST_UPDATE_TIMESTAMP = #{record.lastUpdateDate,javaType=Date,jdbcType=TIMESTAMP},
+      			   PAYMENT_DATE = #{date_app,javaType=Date,jdbcType=DATE},
+      			   CHARGE_BEARER =  #{record.chargeBearer,javaType=String,jdbcType=VARCHAR},
+      			   PAYMENT_SYSTEM = #{record.paymentSystem,javaType=String,jdbcType=VARCHAR}
+      		where PAYMENT_REQUEST_ID = #{record.requestId,javaType=long,jdbcType=NUMERIC}	 
+	</update>
+	
+	<!-- #{record.lastUpdateDate,javaType=Date,jdbcType=TIMESTAMP}, -->
+	<!-- Update Payment Request table -->
+	<update id="updatePaymentRequest" parameterType="com.ge.treasury.mypayments.domain.PaymentRequest">
+		UPDATE MYPAY.T_MYPAYMENT_REQUEST
+		<set>  
+			<if test="request.paymentRef1 != null">PAYMENT_REF_1=#{request.paymentRef1,javaType=String,jdbcType=VARCHAR},</if>
+		    <if test="request.paymentRef2 != null"> PAYMENT_REF_2=#{request.paymentRef2,javaType=String,jdbcType=VARCHAR},</if>
+		    <if test="request.isPayeeExternal != null"> IS_PAYEE_EXTERNAL=#{request.isPayeeExternal,javaType=String,jdbcType=VARCHAR},</if>
+		    <if test="request.isUrgent != null">IS_URGENT=#{request.isUrgent,javaType=String,jdbcType=VARCHAR},</if>
+            <if test="request.manualPymtRsnCode != null">MANUAL_PYMT_RSN_CODE=#{request.manualPymtRsnCode,javaType=String,jdbcType=VARCHAR},</if>
+            <if test="request.dateToExecute != null">DATE_TO_EXECUTE=to_date(#{request.dateToExecute,javaType=String,jdbcType=VARCHAR}),</if>
+            <if test="request.valueDate != null">VALUE_DATE=to_date(#{request.valueDate,javaType=String,jdbcType=VARCHAR}),</if>
+            <if test="request.specifyCurrency != null">SPECIFY_CURRENCY=#{request.specifyCurrency,javaType=String,jdbcType=VARCHAR},</if>
+            <if test="request.payerAmount != null">PAYER_AMOUNT=#{request.payerAmount,javaType=Double,jdbcType=NUMERIC},</if>
+            <if test="request.payerCurrency != null"> MDM_PAYER_CURRENCY=#{request.payerCurrency,javaType=String,jdbcType=VARCHAR},</if>
+            <if test="request.payeeAmount != null">PAYEE_AMOUNT=#{request.payeeAmount,javaType=Double,jdbcType=NUMERIC},</if>
+            <if test="request.payeeCurrency != null">PAYEE_CURRENCY=#{request.payeeCurrency,javaType=String,jdbcType=VARCHAR},</if>            
+            <if test="request.paymentStatusCode != null">PAYMENT_STATUS_CODE=#{request.paymentStatusCode,javaType=String,jdbcType=VARCHAR},</if>
+            <if test="request.nettingInd != null">NETTING_IND=#{request.nettingInd,javaType=String,jdbcType=VARCHAR},</if>
+            <if test="request.paymentTypeCode != null">PAYMENT_TYPE_CD=#{request.paymentTypeCode,javaType=String,jdbcType=VARCHAR},</if>
+            <if test="request.lastUpdateUser != null">LAST_UPDATE_USER=#{request.lastUpdateUser,javaType=String,jdbcType=VARCHAR},</if>
+            <if test="request.lastUpdateDate != null">LAST_UPDATE_TIMESTAMP=#{request.lastUpdateDate,javaType=Date,jdbcType=TIMESTAMP}</if>
+		</set>
+		WHERE 1=1
+		<if test="request.paymentRequestId !=null">
+		    AND PAYMENT_REQUEST_ID = #{request.paymentRequestId}
+		</if>
+	</update>
+
+	<!-- Update File Transfer Status -->
+	<update id="updateFileTransferStatus" parameterType="com.ge.treasury.mypayments.domain.PaymentFile">
+		UPDATE MYPAY.T_MYPAY_AUTOPAY_FILE
+		<set>
+			<if test="paymentFile.transmissionComments != null">
+				TRANSMISSION_COMMENTS=#{paymentFile.transmissionComments,javaType=String,jdbcType=VARCHAR},
+			</if>
+			<if test="paymentFile.transmissionStatusCode != null">
+				TRANSMISSION_STATUS_CODE=#{paymentFile.transmissionStatusCode,javaType=String,jdbcType=VARCHAR},
+			</if>
+			<if test="paymentFile.lastUpdateDate != null">
+				LAST_UPDATE_TIMESTAMP=#{paymentFile.lastUpdateDate,javaType=Date,jdbcType=TIMESTAMP},
+			</if>
+			<if test="paymentFile.lastUpdateUser != null">
+				LAST_UPDATE_USER=#{paymentFile.lastUpdateUser,javaType=String,jdbcType=VARCHAR}
+			</if>
+		</set>
+		WHERE AUTOPAY_FILE_ID = #{paymentFile.autoPayFileId}
+	</update>
+
+	<!--  SELECT STATEMENTS -->
+	
+	<!-- Get payment request dynamically by search map -->
+     <select id="getPaymentRequest" resultMap="PaymentRequestResultMap" parameterType="java.util.Map">
+ 		SELECT
+		    p.PAYMENT_REQUEST_ID,
+		    wfa.PAYMENT_STATUS_CODE,
+		    wfa.USER_ROLE,
+		    wfa.USER_MDM_BUSINESS_NAME,
+		    wfa.USER_MDM_SUB_BUSINESS_NAME,
+		    pay.PAYER_PAYEE_ID,
+		    pay.PAYER_OR_PAYEE
+		    FROM MYPAY.T_MYPAY_PAYMENT_REQUEST p
+		   INNER JOIN MYPAY.T_MYPAY_PAYER_PAYEE pay
+		    ON 	p.PAYMENT_REQUEST_ID = pay.PAYMENT_REQUEST_ID
+        INNER JOIN MYPAY.T_MYPAY_REQUEST_ACTIVITY wfa 
+        ON wfa.PAYMENT_REQUEST_ID = p.PAYMENT_REQUEST_ID
+    
+    </select>
+
+	<select id="getReleasedPaymentRequest" resultMap="PaymentRequestResultMap" parameterType="java.lang.Long">
+		SELECT PAYMENT_REQUEST_ID ,
+		  SEQUENCE_NUMBER ,
+		  SSO_ID ,
+		  USER_NAME ,
+		  USER_EMAIL ,
+		  USER_ROLE ,
+		  USER_BUSINESS ,
+		  USER_SUB_BUSINESS ,
+		  USER_ACTION ,
+		  PAYMENT_STATUS_CODE ,
+		  REJECT_CANCEL_REASON ,
+		  COMMENTS ,
+		  PAYMENT_ACTIVITY_ID ,
+		  VALUE_DATE ,
+		  CREATE_USER ,
+		  CREATE_TIMESTAMP ,
+		  LAST_UPDATE_USER ,
+		  LAST_UPDATE_TIMESTAMP
+		FROM MYPAY.T_MYPAY_REQUEST_ACTIVITY
+		WHERE PAYMENT_STATUS_CODE = 'WRKFLW_STS_RELEASED'
+		AND PAYMENT_REQUEST_ID    = #{paymentRequestId,javaType=long,jdbcType=NUMERIC};
+	</select>
+
+	<!-- Get payment request dynamically by search map -->
+	<select id="getDashboardResults" resultMap="DashboardResultMap" parameterType="java.util.Map">
+		SELECT *
+FROM
+  (SELECT COUNT(*) OVER() AS RECORD_COUNT,
+    REQUEST.PAYMENT_REQUEST_ID,
+    TO_CHAR(REQUEST.CREATE_TIMESTAMP, 'DD-MON-YYYY') AS CREATE_TIMESTAMP,
+    Request.payment_type_cd,
+    PAYEE.PAYEE_MDM_GOLD_ID,
+    PAYEE.PAYEE_PAYEE_SRC_ID,
+    PAYEE.PAYEE_MDM_LE_NAME,
+    PAYER.COUNTRY,
+    PAYER.PAYER_MDM_GOLD_ID,
+    PAYER.PAYER_PAYEE_SRC_ID,
+    PAYER.PAYER_MDM_LE_NAME,
+    PAYEE_CURRENCY,
+    PAYEE_AMOUNT,
+    TO_CHAR(PAYMENT_DATE, 'DD-MON-YYYY') AS PAYMENT_DATE,
+    request.CREATE_USER,
+    REQUEST.ASSIGNED_TO AS ASSIGNED_TO,
+    LOOKUP.DISPLAY_NAME,
+    LOOKUP_PT.DISPLAY_NAME AS REQUEST_TYPE_CODE
+  FROM MYPAY.T_MYPAY_PAYMENT_REQUEST REQUEST,
+    MYPAY.T_MYPAY_REQUEST_ACTIVITY ACTIVITY ,
+    MYPAY.T_MYPAY_LOOKUP LOOKUP ,
+    MYPAY.T_MYPAY_LOOKUP LOOKUP_PT,
+    (SELECT PAYMENT_REQUEST_ID,
+      
+      PAYER_PAYEE_SRC_ID AS PAYER_PAYEE_SRC_ID,
+      MDM_GOLD_ID AS PAYER_MDM_GOLD_ID,
+      MDM_LE_NAME AS PAYER_MDM_LE_NAME,
+      'US'          AS COUNTRY
+    FROM MYPAY.T_MYPAY_PAYER_PAYEE
+    WHERE UPPER(PAYER_OR_PAYEE) = UPPER('PAYER')
+    ) PAYER,
+    (SELECT PAYMENT_REQUEST_ID,
+     
+      PAYER_PAYEE_SRC_ID AS PAYEE_PAYEE_SRC_ID,
+      MDM_GOLD_ID AS PAYEE_MDM_GOLD_ID,
+      MDM_LE_NAME AS PAYEE_MDM_LE_NAME,
+      'US'          AS COUNTRY
+    FROM MYPAY.T_MYPAY_PAYER_PAYEE
+    WHERE UPPER(PAYER_OR_PAYEE) = UPPER('PAYEE')
+    ) PAYEE
+  WHERE REQUEST.PAYMENT_REQUEST_ID = PAYER.PAYMENT_REQUEST_ID (+)
+  AND REQUEST.PAYMENT_REQUEST_ID   = PAYEE.PAYMENT_REQUEST_ID(+)
+  AND REQUEST.PAYMENT_REQUEST_ID = ACTIVITY.PAYMENT_REQUEST_ID
+  AND LOOKUP.MYPAYMENT_LOOKUP_CODE = ACTIVITY.PAYMENT_STATUS_CODE
+  AND LOOKUP_PT.MYPAYMENT_LOOKUP_CODE = REQUEST.REQUEST_TYPE_CODE
+  AND (ACTIVITY.LAST_UPDATE_TIMESTAMP,ACTIVITY.SEQUENCE_NUMBER ,ACTIVITY.PAYMENT_REQUEST_ID) in 
+  (SELECT max(act.LAST_UPDATE_TIMESTAMP),max(act.sequence_number),act.PAYMENT_REQUEST_ID from MYPAY.T_MYPAY_REQUEST_ACTIVITY act group by act.PAYMENT_REQUEST_ID )
+  
+  
+  AND REQUEST.PAYMENT_TYPE_CD      in <foreach item="item" index="index" collection="paginationInput.esList" open="(" separator="," close=")">
+    #{item}
+    </foreach>
+  
+  
+   					<if test="searchMap.business_name != null">
+						AND REQUEST.MDM_BUSINESS_NAME  IN ( ${searchMap.business_name} )
+					</if>
+					
+					<if test="searchMap.sub_business_name != null">
+						AND REQUEST.MDM_SUB_BUSINESS_NAME  IN ( ${searchMap.sub_business_name} )
+					</if>
+					
+					<if test="searchMap.tcode_svc_list != null">
+						AND REQUEST.TCODE_SERVICE_CENTER  IN  ( ${searchMap.tcode_svc_list} )
+					</if>
+					
+					<if test="searchMap.payment_type != null">
+						AND REQUEST.PAYMENT_TYPE_CD  IN  (  ${searchMap.payment_type} )
+					</if>
+					
+  					
+   					<if test="paginationInput.SSO != null">
+						AND REQUEST.CREATE_USER  = ${paginationInput.SSO}
+					</if>
+   					
+   					<!-- <if test="searchMap.ES_Desc != null">
+						AND ES.ES_DESC = ${searchMap.ES_Desc}
+					</if>
+					
+					<if test="searchMap.PAYMENT_TYPE_DESC != null">
+						AND ES.PAYMENT_TYPE_DESC = ${searchMap.PAYMENT_TYPE_DESC}
+					</if> -->
+					
+					<if test="searchMap.request_Date != null">
+						<!-- AND REQUEST.CREATE_TIMESTAMP LIKE (${searchMap.request_Date}) -->
+						 AND TO_CHAR(REQUEST.CREATE_TIMESTAMP,'DD-MM-YY') = (${searchMap.request_Date})
+					</if>
+					
+					<if test="searchMap.value_Date != null">
+						<!-- AND PAYMENT_DATE LIKE (${searchMap.value_Date}) -->
+						AND TO_CHAR(PAYMENT_DATE,'DD-MM-YY') = (${searchMap.value_Date})
+					</if>
+					
+						<if test="searchMap.country != null">
+						AND PAYEE.COUNTRY = ${searchMap.country}
+					</if>
+					
+					<if test="searchMap.currency != null">
+						AND PAYEE_CURRENCY = ${searchMap.currency}
+					</if>
+					
+       				 <if test="searchMap.request_Id != null">
+						AND REQUEST.PAYMENT_REQUEST_ID = ${searchMap.request_Id}
+					</if>
+					<if test="searchMap.requester != null">
+						AND request.CREATE_USER LIKE (${searchMap.requester})
+					</if>
+					<if test="searchMap.assigned_To != null">
+						AND REQUEST.ASSIGNED_TO LIKE (${searchMap.assigned_To})
+						
+					</if>
+					<if test="searchMap.status != null">
+						AND LOOKUP.MYPAYMENT_LOOKUP_CODE = ${searchMap.status}
+						
+					</if>
+					
+					<if test="searchMap.payerDescription != null">
+					
+					<if test="searchMap.payerSrcId != null">
+						AND PAYER_PAYEE_SRC_ID = ${searchMap.payerSrcId}
+						</if>
+						
+						<if test="searchMap.payerMdmGoldId != null">
+						AND PAYER_MDM_GOLD_ID = ${searchMap.payerMdmGoldId}
+						</if>
+						AND PAYER_MDM_LE_NAME = ${searchMap.payerMdmLeName}
+						 
+						
+						
+					</if>
+					
+					<if test="searchMap.payeeDescription != null">
+							<if test="searchMap.payeeSrcId !=null">
+						AND PAYEE_PAYEE_SRC_ID = ${searchMap.payeeSrcId}
+						</if>
+						<if test="searchMap.payeeMdmGoldId != null">
+						AND PAYEE_MDM_GOLD_ID = ${searchMap.payeeMdmGoldId}
+						</if>
+						
+						AND PAYEE_MDM_LE_NAME = ${searchMap.payeeMdmLeName}
+						
+					</if>
+					
+				
+						
+					<if test="searchMap.amount != null">
+						AND PAYEE_AMOUNT = ${searchMap.amount}
+						
+					</if>
+					
+					<if test="searchMap.display_name != null">
+						AND LOOKUP.DISPLAY_NAME IN (${searchMap.display_name})
+						
+					</if>
+		)
+	
+		ORDER BY 
+		${paginationInput.orderByColumn} ${paginationInput.orderBy}
+		OFFSET  ${paginationInput.offset} ROWS FETCH NEXT  ${searchMap.next} ROWS ONLY
+	</select>
+	
+	<update id="updateEntirePaymentRequest" parameterType="com.ge.treasury.mypayments.domain.PaymentRequest">
+            UPDATE MYPAY.T_MYPAY_PAYMENT_REQUEST
+            SET
+            MDM_BUSINESS_NAME=#{request.mdmBusinessName,javaType=String,jdbcType=VARCHAR},
+            MDM_SUB_BUSINESS_NAME=#{request.mdmSubBusinessName,javaType=String,jdbcType=VARCHAR},
+            PAYMENT_REASON_CODE=#{request.paymentReasonCode,javaType=String,jdbcType=VARCHAR},
+            ES_CD=#{request.esCd,javaType=String,jdbcType=VARCHAR},
+            PAYMENT_TYPE_CD=#{request.paymentType,javaType=String,jdbcType=VARCHAR},
+            PAYER_AMOUNT=#{request.payeeAmount,javaType=Double,jdbcType=NUMERIC},
+            MDM_PAYER_CURRENCY=#{request.mdmPayerCurrency,javaType=String,jdbcType=VARCHAR},
+            PAYEE_AMOUNT=#{request.payeeAmount,javaType=Double,jdbcType=NUMERIC},
+            PAYEE_SOURCE=#{request.payeeSource,javaType=String,jdbcType=VARCHAR},
+            PAYEE_CURRENCY=#{request.payeeCurrency,javaType=String,jdbcType=VARCHAR},
+            PAYMENT_DATE=to_date(#{request.paymentDate,javaType=String,jdbcType=DATE}, 'yyyy-mm-dd'),
+            MDM_SPOT_RATE=#{request.mdmSpotRate,javaType=Double,jdbcType=NUMERIC},
+            MDM_MOR_RATE=#{request.mdmMorRate,javaType=Double,jdbcType=NUMERIC},
+            ES_SYSTEM_NAME=#{request.esSystemName,javaType=String,jdbcType=VARCHAR},
+            ERP_NAME=#{request.erpName,javaType=String,jdbcType=VARCHAR},
+            INVOICE_NUMBER=#{request.invoiceNumber,javaType=String,jdbcType=VARCHAR},
+            INVOICE_DATE=to_date(#{request.invoiceDate,javaType=String,jdbcType=DATE}, 'yyyy-mm-dd'),
+            IS_HIGH_RISK_PAYEE=#{request.isHighRiskPayee,javaType=String,jdbcType=VARCHAR},
+            HIGH_RISK_NUMBER=#{request.highRiskNumber,javaType=String,jdbcType=VARCHAR},
+            PAYEE_REASON_MANUAL_ENTRY=#{request.payeeReasonManualEntry,javaType=String,jdbcType=VARCHAR},
+            PAYMENT_STATUS_CODE=#{request.paymentStatusCode,javaType=String,jdbcType=VARCHAR},
+            REQUEST_TYPE_CODE=#{request.requestTypeCode,javaType=String,jdbcType=VARCHAR},
+            ASSIGNED_TO=#{request.assignedTo,javaType=String,jdbcType=VARCHAR},
+            NUMBER_OF_PAYMENTS=#{request.numberOfPayments,javaType=long,jdbcType=NUMERIC},
+            TOTAL_AMOUNT=#{request.totalAmount,javaType=Double,jdbcType=NUMERIC},
+            IS_GOF_BOOKED=#{request.isGofBooked,javaType=String,jdbcType=VARCHAR},
+            TCODE_SERVICE_CENTER=#{request.tCodeServiceCenter,javaType=String,jdbcType=VARCHAR},
+            INSTURMENT_TYPE=#{request.instrumentType,javaType=String,jdbcType=VARCHAR},
+            PAYMENT_METHOD_CODE=#{request.paymentMethod,javaType=String,jdbcType=VARCHAR},
+            LAST_UPDATE_USER=#{request.lastUpdateUser,javaType=String,jdbcType=VARCHAR},
+            LAST_UPDATE_TIMESTAMP=#{request.lastUpdateDate,javaType=Date,jdbcType=TIMESTAMP}
+            WHERE
+            PAYMENT_REQUEST_ID = #{request.requestId}
+      </update>
+	
+	<!-- Get payment request dynamically by paymentRequestId -->
+     <select id="loadPaymentRequest" resultMap="PaymentRequestLoadMap" parameterType="java.lang.Long">
+     select * from MYPAY.T_MYPAY_PAYMENT_REQUEST where PAYMENT_REQUEST_ID = #{long}
+     </select>
+     <select id="selectPayee" resultMap="PayerPayeeResultMap" parameterType="java.lang.Long">
+     select * from MYPAY.T_MYPAY_PAYER_PAYEE where PAYMENT_REQUEST_ID = #{long} and PAYER_OR_PAYEE = 'PAYEE'
+     </select>
+     <select id="selectPayer" resultMap="PayerPayeeResultMap" parameterType="java.lang.Long">
+     select * from MYPAY.T_MYPAY_PAYER_PAYEE where PAYMENT_REQUEST_ID = #{long} and PAYER_OR_PAYEE = 'PAYER'
+     </select>
+     <select id="selectRequestActivity" resultMap="RequestActivityResultMap" parameterType="java.lang.Long">
+     select * from MYPAY.T_MYPAY_REQUEST_ACTIVITY where PAYMENT_REQUEST_ID = #{long} order by LAST_UPDATE_TIMESTAMP desc
+     </select>
+     <select id="selectBankIntermediary" resultMap="BankIntermediaryResultMap" parameterType="java.lang.Long">
+     select * from MYPAY.T_MYPAY_BANK_INTERMEDIARY where PAYMENT_REQUEST_ID = #{long}
+     </select>
+     <select id="selectPaymentFile" resultMap="PaymentFileResultMap" parameterType="java.lang.Long">
+     select * from MYPAY.T_MYPAY_AUTOPAY_FILE where PAYMENT_REQUEST_ID = #{long}
+     </select>
+     <select id="selectPaymentDocument" resultMap="PaymentDocumentResultMap" parameterType="java.lang.Long">
+     select * from MYPAY.T_MYPAY_DOCUMENT where PAYMENT_REQUEST_ID = #{long}
+     </select>
+     <select id="selectPaymentConfirmation" resultMap="PaymentConfirmationResultMap" parameterType="java.lang.Long">
+     select * from MYPAY.T_MYPAY_MANUAL_CONFIRMATION where PAYMENT_REQUEST_ID = #{long}
+     </select>
+     <select id="selectPaymentReference" resultMap="PaymentReferenceResultMap" parameterType="java.lang.Long">
+     select * from MYPAY.T_MYPAY_REFERENCES where PAYMENT_REQUEST_ID = #{long}
+     </select>
+     
+     
+     <select id="loadMypayLookup" resultMap="MypayLookupResultMap" parameterType="com.ge.treasury.mypayments.domain.MypayLookup">
+     select * from MYPAY.T_MYPAY_LOOKUP where 1=1 
+     		<if test="myPayLookUp.lookupCode != null"> AND MYPAYMENT_LOOKUP_CODE=#{myPayLookUp.lookupCode,javaType=String,jdbcType=VARCHAR}</if>
+		    <if test="myPayLookUp.lookupType != null"> AND LOOKUP_TYPE=#{myPayLookUp.lookupType,javaType=String,jdbcType=VARCHAR}</if>
+		    <if test="myPayLookUp.displayName != null"> AND DISPLAY_NAME=#{myPayLookUp.displayName,javaType=String,jdbcType=VARCHAR}</if>
+		    <if test="myPayLookUp.displayOrder != null"> AND DISPLAY_ORDER=#{myPayLookUp.displayOrder,javaType=Long,jdbcType=NUMBER}</if>
+            <if test="myPayLookUp.description != null"> AND DESCRIPTION=#{myPayLookUp.description,javaType=String,jdbcType=VARCHAR}</if>
+            <if test="myPayLookUp.isActive != null"> AND IS_ACTIVE=#{myPayLookUp.isActive,javaType=java.lang.Boolean, jdbcType=CHAR, typeHandler=com.ge.treasury.mypayments.domain.TypeHandler.BooleanTypeHandler} </if>
+            <if test="myPayLookUp.isMandatory != null"> AND IS_MANDATORY=#{myPayLookUp.isMandatory,javaType=java.lang.Boolean, jdbcType=CHAR, typeHandler=com.ge.treasury.mypayments.domain.TypeHandler.BooleanTypeHandler} </if>
+     </select>
+     
+     <select id="validatePaymentFileForHash" resultType="int" parameterType="java.lang.String">
+     select count(*) from MYPAY.T_MYPAY_AUTOPAY_FILE where FILE_HASH = #{stringHash}
+     </select>
+     
+     <select id="selectLatestRequestActivity" resultMap="RequestActivityResultMap" parameterType="java.lang.Long">
+     	SELECT PAYMENT_REQUEST_ID ,
+		  SEQUENCE_NUMBER ,
+		  SSO_ID ,
+		  USER_NAME ,
+		  USER_EMAIL ,
+		  USER_ROLE ,
+		  USER_BUSINESS ,
+		  USER_SUB_BUSINESS ,
+		  USER_ACTION ,
+		  PAYMENT_STATUS_CODE ,
+		  REJECT_CANCEL_REASON ,
+		  COMMENTS ,
+		  PAYMENT_ACTIVITY_ID ,
+		  VALUE_DATE ,
+		  CREATE_USER ,
+		  CREATE_TIMESTAMP ,
+		  LAST_UPDATE_USER ,
+		  LAST_UPDATE_TIMESTAMP
+		FROM MYPAY.T_MYPAY_REQUEST_ACTIVITY
+		WHERE ROWNUM = 1
+		AND PAYMENT_REQUEST_ID = #{paymentRequestId,javaType=Long,jdbcType=BIGINT}
+		ORDER BY LAST_UPDATE_TIMESTAMP DESC
+     </select>
+     
+     <select id="getPaymentFileClob" resultMap="PaymentFileResultMap" parameterType="java.lang.Long">
+     	SELECT * FROM (
+     	SELECT AUTOPAY_FILE_ID ,
+		  SEQUENCE_NUMBER ,
+		  PAYMENT_REQUEST_ID ,
+		  FILE_TYPE_CODE ,
+		  FILE_STATUS_CODE ,
+		  PAYMENT_SYSTEM_CODE ,
+		  FILE_NAME ,
+		  SERVER_NAME ,
+		  FILE_HASH ,
+		  FILE_CONTENT ,
+		  FILE_COMMENTS ,
+		  CREATE_USER ,
+		  CREATE_TIMESTAMP ,
+		  LAST_UPDATE_USER ,
+		  LAST_UPDATE_TIMESTAMP ,
+		  TRANSMISSION_STATUS_CODE ,
+		  TRANSMISSION_COMMENTS
+		FROM MYPAY.T_MYPAY_AUTOPAY_FILE
+		WHERE PAYMENT_REQUEST_ID = #{paymentRequestId} ORDER BY LAST_UPDATE_TIMESTAMP DESC )
+		WHERE ROWNUM               = 1
+     </select>
+     
+     <!-- Update Assign TO -->
+	<update id="updateAssignTo" parameterType="java.util.Map">
+		UPDATE MYPAY.T_MYPAY_PAYMENT_REQUEST SET
+		ASSIGNED_TO = #{assignToReq.assignToSSO,javaType=String,jdbcType=VARCHAR},
+		LAST_UPDATE_USER = #{assignToReq.lastUpdateUser,javaType=String,jdbcType=VARCHAR},
+        LAST_UPDATE_TIMESTAMP = #{assignToReq.lastUpdateDate,javaType=Date,jdbcType=TIMESTAMP}
+		WHERE PAYMENT_REQUEST_ID = #{assignToReq.requestId}
+	</update>
+     <select id="getPayeeName" resultType="java.lang.String"
+		parameterType="java.lang.String">
+		select distinct(PAYER_PAYEE_SRC_ID
+		||' / '
+		||MDM_GOLD_ID
+		||' / '
+		||MDM_LE_NAME) from MYPAY.T_MYPAY_PAYER_PAYEE where UPPER(MDM_LE_NAME) LIKE UPPER(${searchParam})
+		and UPPER(PAYER_OR_PAYEE) =UPPER('PAYEE')
+	</select>
+	<select id="getPayerName" resultType="java.lang.String"
+		parameterType="java.lang.String">
+
+		select distinct(PAYER_PAYEE_SRC_ID
+		||' / '
+		||MDM_GOLD_ID
+		||' / '
+		||MDM_LE_NAME) from MYPAY.T_MYPAY_PAYER_PAYEE where UPPER(MDM_LE_NAME) LIKE UPPER(${searchParam})
+		and UPPER(PAYER_OR_PAYEE) =UPPER('PAYER')
+	</select>
+	
+	<select id="getRequestType" resultType="java.lang.String"
+		parameterType="java.lang.String">
+	 select distinct PAYMENT_TYPE_desC from MYPAY.T_MYPAY_ENT_STNDRD where UPPER(payment_type_desc) like UPPER(${searchParam})
+		
+	</select>
+	
+	<select id="getEnterpriseDesc" resultType="java.lang.String"
+		parameterType="java.lang.String">
+	 select distinct ES_DESC from MYPAY.T_MYPAY_ENT_STNDRD where UPPER(ES_DESC) like UPPER(${searchParam}) 
+		
+	</select>
+	
+	<select id="getRequestActivities" resultType="java.lang.Integer"
+		parameterType="java.lang.Integer">
+
+		SELECT count(*) FROM MYPAY.T_MYPAY_REQUEST_ACTIVITY req
+			WHERE req.PAYMENT_REQUEST_ID = #{requestId,javaType=long,jdbcType=NUMERIC}	 
+
+	</select>
+	
+	<select id="getDocsIdList" resultMap="PaymentDocumentResultMap"
+		parameterType="java.util.Map">
+
+		SELECT * FROM MYPAY.T_MYPAY_DOCUMENT req
+			WHERE req.PAYMENT_REQUEST_ID = #{requestId,javaType=long,jdbcType=NUMERIC}	 
+
+	</select>
+	
+	
+	 <insert id="insertManualConfirmation" parameterType="com.ge.treasury.mypayments.domain.ManualConfirmation">
+        
+         <selectKey keyProperty="manualConfirmation.manualConfimationId" resultType="long" order="BEFORE">
+           SELECT MYPAY.SEQ_MANUAL_CONFIRMATION_ID.nextval FROM dual
+       </selectKey>
+        INSERT INTO MYPAY.T_MYPAY_MANUAL_CONFIRMATION
+        (
+            MANUAL_CONFIRMATION_ID, PAYMENT_REQUEST_ID,PAYMENT_EXECUTION_DATE,BANK_CONFRMN_NUMBER, BANK_STATUS_CODE, FAILURE_REASON, BANK_STATUS_DATE, 
+            CREATE_USER, CREATE_TIMESTAMP, LAST_UPDATE_USER, LAST_UPDATE_TIMESTAMP 
+        )
+        VALUES
+        (
+            #{manualConfirmation.manualConfimationId,javaType=long,jdbcType=NUMERIC},
+            #{manualConfirmation.paymentRequestId,javaType=long,jdbcType=NUMERIC}, 
+            to_date(#{manualConfirmation.paymentExecutionDt,javaType=String,jdbcType=DATE}, 'yyyy-mm-dd'),
+            
+            #{manualConfirmation.bankConfirmationNo,javaType=String,jdbcType=VARCHAR}, 
+            #{manualConfirmation.bankStatusCode,javaType=String,jdbcType=VARCHAR},
+            #{manualConfirmation.failureReason,javaType=String,jdbcType=VARCHAR},
+            to_date(#{manualConfirmation.bankStatusDt,javaType=String,jdbcType=DATE},  'yyyy-mm-dd'),
+            #{manualConfirmation.createUser,javaType=String,jdbcType=VARCHAR},
+            #{manualConfirmation.createDate,javaType=Date,jdbcType=TIMESTAMP}, 
+            #{manualConfirmation.lastUpdateUser,javaType=String,jdbcType=VARCHAR}, 
+            #{manualConfirmation.lastUpdateDate,javaType=Date,jdbcType=TIMESTAMP}
+           
+        )
+    </insert>
+    
+    <select id="checkDuplicateRequest" resultMap="PaymentRequestLoadMap" parameterType="com.ge.treasury.mypayments.domain.PaymentRequest">
+    SELECT REQUEST.PAYMENT_REQUEST_ID
+FROM MYPAY.T_MYPAY_PAYMENT_REQUEST REQUEST,
+(SELECT *
+      
+    FROM MYPAY.T_MYPAY_PAYER_PAYEE
+    WHERE UPPER(PAYER_OR_PAYEE) = UPPER('PAYER')
+    ) PAYER,
+     (SELECT *
+      
+    FROM MYPAY.T_MYPAY_PAYER_PAYEE
+    WHERE UPPER(PAYER_OR_PAYEE) = UPPER('PAYEE')
+    ) PAYEE
+WHERE REQUEST.PAYMENT_REQUEST_ID = PAYER.PAYMENT_REQUEST_ID (+)
+AND REQUEST.PAYMENT_REQUEST_ID = PAYEE.PAYMENT_REQUEST_ID (+)
+AND REQUEST.PAYMENT_STATUS_CODE != 'CANCELLED' 
+			<if test="paymentRequestValidation.mdmPayerCurrency != null">
+						AND REQUEST.MDM_PAYER_CURRENCY = #{paymentRequestValidation.mdmPayerCurrency}
+					</if>
+					  
+    
+					<if test="paymentRequestValidation.payee.mdmGoldId != null">
+						AND PAYEE.MDM_GOLD_ID = #{paymentRequestValidation.payee.mdmGoldId}
+					</if>
+					
+					
+					<if test="paymentRequestValidation.payer!= null">
+					<if test="paymentRequestValidation.payer.mdmGoldId!= null">
+					AND PAYER.MDM_GOLD_ID = #{paymentRequestValidation.payer.mdmGoldId}
+					</if>
+						
+					</if>
+					
+					<if test="paymentRequestValidation.payeeAmount != null">
+						AND REQUEST.PAYER_AMOUNT = #{paymentRequestValidation.payeeAmount}
+					</if>
+					
+					<if test="paymentRequestValidation.payee.payerPayeeSrcId != null">
+						AND PAYEE.PAYER_PAYEE_SRC_ID = #{paymentRequestValidation.payee.payerPayeeSrcId}
+					</if>
+
+					<if test="paymentRequestValidation.payee.payeeCity != null">
+						AND PAYER.MDM_LE_NAME  = #{paymentRequestValidation.payee.payeeCity}
+					</if>
+					
+					<if test="paymentRequestValidation.payee.bankAccountNumber != null">
+						AND PAYEE.bank_account_number = #{paymentRequestValidation.payee.bankAccountNumber}
+					</if>
+					
+    </select>
+</mapper>
