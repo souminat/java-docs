@@ -1,0 +1,186 @@
+/**
+ * Copyright GE
+ */
+package com.ge.treasury.mypayments.mapper.payment;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import com.ge.treasury.mypayments.controllers.model.PaginatedResultList;
+import com.ge.treasury.mypayments.domain.*;
+
+import org.apache.ibatis.annotations.Param;
+
+/**
+ * Interface class that has the following methods.
+ * 
+ * @author MyPayments Dev Team
+ *
+ */
+public interface PaymentRequestMapper {
+
+	/**
+	 * Calls insertPaymentReq method in mapper xml
+	 * 
+	 * @param request
+	 * @return int
+	 */
+	int createPaymentReq(@Param("request") PaymentRequest request);
+
+	/**
+	 * Calls insertPaymentReq method in mapper xml
+	 * 
+	 * @param request
+	 * @return int
+	 */
+	int insertPayerPayee(@Param("payerPayee") PayerPayee payerPayee);
+
+	/**
+	 * Calls insertPaymentReferenc method in mapper xml
+	 * 
+	 * @param reference
+	 * @return int
+	 */
+	int insertPaymentReference(@Param("reference") PaymentReference reference);
+
+	/**
+	 * Calls insertRequestActivity method in mapper xml
+	 * 
+	 * @param requestActivity
+	 * @return int
+	 */
+	int insertRequestActivity(@Param("requestActivity") RequestActivity requestActivity);
+
+	/**
+	 * Calls updatePayRequest method in mapper xml
+	 * 
+	 * @param request
+	 * @return int
+	 */
+	int updatePayRequest(@Param("record") PaymentRequest record);
+
+	/**
+	 * Calls updatePaymentReq method in mapper xml
+	 * 
+	 * @param request
+	 * @return int
+	 */
+	int updatePaymentRequest(@Param("request") PaymentRequest request);
+
+	int updateEntirePaymentRequest(@Param("request") PaymentRequest request);
+
+	/**
+	 * Calls getPaymentRequest method in mapper xml
+	 * 
+	 * @param searchMap
+	 * @return
+	 */
+	List<PaymentRequest> getPaymentRequest(Map<String, String> searchMap);
+
+	/**
+	 * Calls getPaymentRequest method in mapper xml
+	 *
+	 *
+	 * @return
+	 */
+	List<DashboardResult> getDashboardResults(@Param("paginationInput") PaginatedResultList<DashboardResult> paginatedResultList,
+			@Param("searchMap") Map<String, String> searchMap);
+
+	/**
+	 * Calls insertBankIntermediary method in mapper xml
+	 * 
+	 * @param bankIntermediary
+	 * @return
+	 */
+
+	int insertBankIntermediary(@Param("bankIntermediary") BankIntermediary bankIntermediary);
+
+
+	/**
+	 * Calls insertDocument method in mapper xml
+	 *
+	 * @param paymentDocument
+	 * @return
+	 */
+
+	int insertDocument(@Param("paymentDocument") PaymentDocument paymentDocument);
+
+	/**
+	 * Calls loadPaymentRequest method in mapper xml
+	 * 
+	 * @param paymentRequest
+	 * @return
+	 */
+	PaymentRequest loadPaymentRequest(Long paymentRequest);
+
+	/**
+	 * Calls insertPaymentFile method in mapper xml
+	 * 
+	 * @param PaymentFile
+	 * @return int
+	 */
+	int insertPaymentFile(@Param("paymentFile") PaymentFile paymentFile);
+
+	/**
+	 * Calls validatePaymentFileForHash method in mapper xml
+	 * 
+	 * @param PaymentFile
+	 * @return int
+	 */
+	int validatePaymentFileForHash(@Param("stringHash") String stringHash);
+
+	/**
+	 * Calls myPayLookUpCode method in mapper xml
+	 * 
+	 * @param myPayLookUpCode
+	 * @return
+	 */
+	List<MypayLookup> loadMypayLookup(@Param("myPayLookUp") MypayLookup myPayLookUp);
+
+	/**
+	 * Calls updateFileTransferStatus method in mapper xml
+	 * 
+	 * @param paymentFile
+	 * @return
+	 */
+	int updateFileTransferStatus(@Param("paymentFile") PaymentFile paymentFile);
+
+	/**
+	 * Calls selectLatestRequestActivity in mapper xml
+	 * 
+	 * @param paymentRequestId
+	 * @return
+	 */
+	RequestActivity selectLatestRequestActivity(@Param("paymentRequestId") long paymentRequestId);
+
+	PaymentFile getPaymentFileClob(@Param("paymentRequestId") long paymentRequestId);
+
+	void updateApprovalPaymentParams(@Param("record") PaymentRequest request, @Param("date_app") Date date_app);
+
+	void updatePayerForApprovalSave(@Param("payerPayee") PayerPayee payerPayee, @Param("recordId") Long recordId);
+
+	void updatePayeeForApprovalSave(@Param("payerPayee") PayerPayee payerPayee, @Param("recordId") Long recordId);
+
+	void updateAssignTo(@Param("assignToMap") Map<String, String> assignToMap);
+
+	void updatePrepareDate(@Param("record") PaymentRequest request, @Param("date_app") Date date_app);
+
+	void updateAssignTo(@Param("assignToReq") PaymentRequest request);
+
+	List<String> getPayerName(@Param("searchParam") String searchParam);
+
+	List<String> getPayeeName(@Param("searchParam") String searchParam);
+
+	List<String> getRequestType(@Param("searchParam") String searchParam);
+
+	int insertManualConfirmation(@Param("manualConfirmation") ManualConfirmation manualConfirmation);
+
+	int getRequestActivities(@Param("requestId") Long requestId);
+
+	List<PaymentDocument> getDocsIdList(@Param("requestId") Long requestId);
+	
+	List<PaymentRequest> checkDuplicateRequest(@Param("paymentRequestValidation") PaymentRequest paymentRequest);
+
+	List<String> getEnterpriseDesc(@Param("searchParam") String searchParam);
+}
