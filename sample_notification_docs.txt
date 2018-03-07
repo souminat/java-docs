@@ -1,0 +1,238 @@
+package com.ge.treasury.mybank.util.business.notification;
+
+import java.io.File;
+import java.io.StringWriter;
+import java.util.Map;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.exception.ParseErrorException;
+import org.apache.velocity.exception.ResourceNotFoundException;
+import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Component;
+
+import com.ge.treasury.mybank.util.business.MyBankLogger;
+import com.ge.treasury.mybank.util.business.exceptions.SystemException;
+
+/**
+ * NotificationUtil needed to send email
+ * 
+ * @author MyBank Dev Team
+ * 
+ */
+@Component
+public class NotificationUtil implements Notification {
+
+    @Value("${mybank.notification.email}")
+    private String notificationEmail;
+
+    @Value("${mybank.notification.host}")
+    private String hostName;
+    
+    @Value("${mybank.notification.supportemail}")
+    private String supportEmailID;
+    
+    @Value("${app.environment}")
+    private String appEnvironment;
+    
+
+    /*
+     * Send HTML Notification Email using VM template (non-Javadoc)
+     * 
+     * @see com.ge.treasury.mybank.util.business.notification.Notification#
+     * sendHtmlNotification(java.lang.String, java.lang.String,
+     * java.lang.String, java.util.Map)
+     */
+    @Override
+    public void sendHtmlNotification(String mails, String subject,
+            String vmFileName, Map<String, String> tokenMap) throws Exception {
+        long startTime = System.currentTimeMillis();
+        MyBankLogger.logStart(this, "sendHtmlNotification : mails:-" + mails
+                + ", subject:- " + subject + ", vmFileName:-" + vmFileName
+                + ", tokenMap:-" + tokenMap);
+        String body = createBodyUsingVMTemplate(vmFileName, tokenMap);
+
+        MyBankLogger.logDebug(this, "body->" + body);
+        Properties properties = System.getProperties();
+        properties.setProperty("mail.smtp.host", hostName);
+        Session session = Session.getDefaultInstance(properties);
+        MimeMessage message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(notificationEmail));
+        message.setRecipients(Message.RecipientType.TO, mails);
+        message.addRecipient(Message.RecipientType.CC, new InternetAddress(notificationEmail));
+        message.setSubject(subject);
+        message.setContent(body, "text/html; charset=utf-8");
+        try {
+            Transport.send(message);
+        } catch (MailException ex) {
+            throw new SystemException(
+                    "Could not send email, pls try again or contact System Admin "
+                            + ex);
+        }
+        MyBankLogger.logEnd(this, "sendHtmlNotification",
+                System.currentTimeMillis() - startTime);
+    }
+    
+    @Override
+    public void sendHtmlNotificationWithAttachment(String mails, String subject,
+            String vmFileName, Map<String, String> tokenMap,File file) throws Exception {
+        long startTime = System.currentTimeMillis();
+        MyBankLogger.logStart(this, "sendHtmlNotification : mails:-" + mails
+                + ", subject:- " + subject + ", vmFileName:-" + vmFileName
+                + ", tokenMap:-" + tokenMap);
+        String body = createBodyUsingVMTemplate(vmFileName, tokenMap);
+
+        MyBankLogger.logDebug(this, "body->" + body);
+        Properties properties = System.getProperties();
+        properties.setProperty("mail.smtp.host", hostName);
+        Session session = Session.getDefaultInstance(properties);
+
+        MimeMessage message = new MimeMessage(session);
+        
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        
+        
+        helper.setFrom(new InternetAddress(notificationEmail));
+        helper.setTo(mails);
+        helper.setSubject(subject);
+              
+        if(null!=file){
+        	String customBody = "Error found in your submission. Please find attached file. ";
+        	helper.setText(customBody);
+    		helper.addAttachment("Error Report.csv", file);
+        }else{
+        	helper.setText(body,true);
+        }
+		
+        // Send message
+        try {
+            Transport.send(message);
+        } catch (MailException ex) {
+            throw new SystemException(
+                    "Could not send email, pls try again or contact System Admin "
+                            + ex);
+        }
+        MyBankLogger.logEnd(this, "sendHtmlNotification",
+                System.currentTimeMillis() - startTime);
+    }
+
+    /**
+     * Use to create body using VM template.
+     * 
+     * @param templateFile
+     * @param tokenMap
+     * @return
+     * @throws Exception
+     */
+    private String createBodyUsingVMTemplate(String templateFile,
+            Map<String, String> tokenMap) throws Exception {
+        MyBankLogger.logDebug(this, "createBodyUsingVMTemplate start");
+        String body = null;
+
+        Properties p = new Properties();
+        p.put(RuntimeConstants.RESOURCE_LOADER, "classpath");
+        p.put("classpath.resource.loader.class",
+                ClasspathResourceLoader.class.getName());
+
+        Velocity.init(p);
+        VelocityContext context = new VelocityContext();
+
+        for (Map.Entry<String, String> tokenEntry : tokenMap.entrySet()) {
+
+            context.put(tokenEntry.getKey(), tokenEntry.getValue());
+        }
+
+        Template template = null;
+
+        try {
+            template = Velocity.getTemplate(templateFile);
+        } catch (ResourceNotFoundException rnfe) {
+            MyBankLogger.logError(this, rnfe.getMessage(), rnfe);
+            MyBankLogger.logDebug(this,
+                    "Example : error : cannot find template " + templateFile);
+        } catch (ParseErrorException pee) {
+            MyBankLogger.logError(this, pee.getMessage(), pee);
+            MyBankLogger.logDebug(this, "Example : Syntax error in template "
+                    + templateFile + ":" + pee);
+        }
+        StringWriter sw = new StringWriter();
+        if (template != null) {
+            template.merge(context, sw);
+        }
+        body = sw.toString();
+        MyBankLogger.logDebug(this, "Body after merging template: " + body);
+        MyBankLogger.logDebug(this, "createBodyUsingVMTemplate end");
+        return body;
+    }
+    
+    
+    public String sendErrorNotification(Exception ex) {
+		String msg = null;
+		try {
+			String subject = "MyBank: Application Error Occured";
+			VelocityEngine ve = new VelocityEngine();
+			ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+			ve.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
+			ve.init();
+			VelocityContext context = new VelocityContext();
+			context.put("exceptionReport", ExceptionUtils.getStackTrace(ex));
+		
+			
+			Template template = ve.getTemplate("exceptionReportTemplate.vm");
+			StringWriter writer = new StringWriter();
+			template.merge(context, writer);
+			msg = sendErrorNotification(subject, writer.toString(), supportEmailID);
+		} catch (MessagingException  e) {
+			MyBankLogger.logError(this, e.getMessage(), e);
+		}
+		
+		return msg;
+		
+	}
+    
+    
+    //added email feature
+    private String sendErrorNotification(String subject, String body, String toMail) throws MessagingException {
+		String msg = null;
+	
+		String sender = notificationEmail;
+		long startTime = System.currentTimeMillis();
+		String receiver = toMail;
+		if (!("local").equals(appEnvironment)) {
+			Properties properties = System.getProperties();
+	        properties.setProperty("mail.smtp.host", hostName);
+	        Session session = Session.getDefaultInstance(properties);
+
+	        MimeMessage message = new MimeMessage(session);
+	        message.setFrom(new InternetAddress(sender));
+	        message.setRecipients(Message.RecipientType.TO, receiver);
+	        message.setSubject(subject);
+	        message.setContent(body, "text/html; charset=utf-8");
+	        try {
+	            Transport.send(message);
+	            msg = "email successfully delivered";
+	        } catch (MailException ex) {
+	            throw new SystemException("Could not send email, pls try again or contact System Admin " + ex);
+	        }
+		}
+        
+        MyBankLogger.logEnd(this, "sendHtmlNotification", System.currentTimeMillis() - startTime);
+		return msg;
+	}
+
+}
